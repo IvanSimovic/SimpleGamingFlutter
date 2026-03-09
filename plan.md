@@ -99,11 +99,23 @@ riverpod_generator: ^2.x
 shimmer: ^3.x
 lottie: ^3.x
 cached_network_image: ^3.x       # equivalent of Coil
+
+# Localisation
+intl: ^0.x                        # part of Flutter SDK toolchain
+# flutter_localizations is from the Flutter SDK — no pub.dev entry needed
 ```
 
 ---
 
 ## Phase Plan
+
+### Phase 0 — Localisation Setup (retrofit into Phase 1)
+- `pubspec.yaml` — add `intl`, enable `generate: true` and `flutter_localizations` SDK dependency
+- `l10n.yaml` — config file pointing to `.arb` files
+- `lib/l10n/app_en.arb` — English strings file, source of truth
+- `lib/l10n/app_localizations.dart` is generated — accessed via `context.l10n`
+- `main.dart` — add `localizationsDelegates` and `supportedLocales` to `MaterialApp.router`
+- All user-facing strings live in `.arb`. Nothing hardcoded in widgets. Ever.
 
 ### Phase 1 — Foundation
 - `android/app/build.gradle` — change `applicationId` to `com.simovic.simplegaming`
@@ -157,6 +169,7 @@ cached_network_image: ^3.x       # equivalent of Coil
 - **All state is Freezed.** No mutable fields in state classes.
 - **All errors surface via `AsyncValue.error`.** No silent catches.
 - **Design system only.** No hardcoded colours, sizes, or font values in widgets.
+- **No hardcoded strings in widgets.** Every user-facing string goes in `app_en.arb` and is accessed via `context.l10n`.
 - **`autoDispose` on screen-level providers.** Provider is alive while the screen is on the stack, gone when it's not.
 - **Run `build_runner` after every model or provider annotation change.** Treat it like a compile step.
 - **No repository interfaces by default.** Override the provider in tests. Add an interface only when a second implementation exists.

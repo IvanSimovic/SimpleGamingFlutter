@@ -1,0 +1,30 @@
+{
+  "@@locale": "en",
+
+  "email": "Email",
+  "@email": { "description": "Email field label" },
+
+  "password": "Password",
+  "@password": { "description": "Password field label" },
+
+  "loginSignIn": "Sign In",
+  "@loginSignIn": { "description": "Sign in button label on the login screen" },
+
+  "loginEmailRequired": "Email is required",
+  "@loginEmailRequired": { "description": "Validation error when email field is empty" },
+
+  "loginPasswordRequired": "Password is required",
+  "@loginPasswordRequired": { "description": "Validation error when password field is empty" },
+
+  "loginSignInFailed": "Sign in failed",
+  "@loginSignInFailed": { "description": "Generic error when sign in fails" },
+
+  "navReels": "Reels",
+  "@navReels": { "description": "Bottom nav label for Reels tab" },
+
+  "navAdd": "Add",
+  "@navAdd": { "description": "Bottom nav label for Add Game tab" },
+
+  "navFavourites": "Favourites",
+  "@navFavourites": { "description": "Bottom nav label for Favourites tab" }
+}
