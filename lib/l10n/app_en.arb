@@ -38,5 +38,11 @@
   "@navAdd": { "description": "Bottom nav label for Add Game tab" },
 
   "navFavourites": "Favourites",
-  "@navFavourites": { "description": "Bottom nav label for Favourites tab" }
+  "@navFavourites": { "description": "Bottom nav label for Favourites tab" },
+
+  "noFavourites": "No favourites yet",
+  "@noFavourites": { "description": "Empty state message on the Favourites screen" },
+
+  "delete": "Delete",
+  "@delete": { "description": "Delete action label" }
 }
