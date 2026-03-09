@@ -6,7 +6,9 @@ part 'favourite_games_state.freezed.dart';
 sealed class FavouriteGamesState with _$FavouriteGamesState {
   const factory FavouriteGamesState.normal() = FavouriteGamesNormal;
   const factory FavouriteGamesState.selecting({
-    required Set<String> selectedIds,
+    required String gameId,
   }) = FavouriteGamesSelecting;
-  const factory FavouriteGamesState.deleting() = FavouriteGamesDeleting;
+  const factory FavouriteGamesState.deleting({
+    required String gameId,
+  }) = FavouriteGamesDeleting;
 }

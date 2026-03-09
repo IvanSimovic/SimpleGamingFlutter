@@ -7,8 +7,13 @@ class FakeReelsRepository extends Fake implements ReelsRepository {
   bool hasMore = false;
   Exception? fetchException;
 
+  String detailDescription = '';
+  List<String> detailScreenshots = [];
+  Exception? detailException;
+
   // Tracks which pages were requested so tests can verify pagination.
   final List<int> requestedPages = [];
+  final List<String> detailRequestedIds = [];
 
   @override
   Future<({List<ReelGame> games, bool hasMore})> fetchGames({
@@ -17,5 +22,14 @@ class FakeReelsRepository extends Fake implements ReelsRepository {
     requestedPages.add(page);
     if (fetchException != null) throw fetchException!;
     return (games: fetchResult, hasMore: hasMore);
+  }
+
+  @override
+  Future<({String description, List<String> screenshots})> fetchGameDetail(
+    String id,
+  ) async {
+    detailRequestedIds.add(id);
+    if (detailException != null) throw detailException!;
+    return (description: detailDescription, screenshots: detailScreenshots);
   }
 }

@@ -1,4 +1,4 @@
-package com.example.longtut
+package com.simovic.simplegaming
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -46,6 +46,9 @@
   "delete": "Delete",
   "@delete": { "description": "Delete action label" },
 
+  "cancel": "Cancel",
+  "@cancel": { "description": "Cancel action label" },
+
   "reelsEmpty": "No more games to discover",
   "@reelsEmpty": { "description": "Empty state message on the Reels screen" }
 }

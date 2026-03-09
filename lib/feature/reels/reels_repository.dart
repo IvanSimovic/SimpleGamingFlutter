@@ -21,6 +21,26 @@ class _GenreApiModel {
 }
 
 @JsonSerializable(createToJson: false)
+class _PlatformApiModel {
+  const _PlatformApiModel({required this.name});
+
+  final String name;
+
+  factory _PlatformApiModel.fromJson(Map<String, dynamic> json) =>
+      _$PlatformApiModelFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class _PlatformWrapperApiModel {
+  const _PlatformWrapperApiModel({required this.platform});
+
+  final _PlatformApiModel platform;
+
+  factory _PlatformWrapperApiModel.fromJson(Map<String, dynamic> json) =>
+      _$PlatformWrapperApiModelFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
 class _ReelGameApiModel {
   const _ReelGameApiModel({
     required this.id,
@@ -28,6 +48,9 @@ class _ReelGameApiModel {
     this.backgroundImage,
     required this.rating,
     required this.genres,
+    this.metacritic,
+    required this.platforms,
+    required this.playtime,
   });
 
   final int id;
@@ -37,9 +60,37 @@ class _ReelGameApiModel {
   @JsonKey(defaultValue: 0.0)
   final double rating;
   final List<_GenreApiModel> genres;
+  final int? metacritic;
+  @JsonKey(defaultValue: [])
+  final List<_PlatformWrapperApiModel> platforms;
+  @JsonKey(defaultValue: 0)
+  final int playtime;
 
   factory _ReelGameApiModel.fromJson(Map<String, dynamic> json) =>
       _$ReelGameApiModelFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class _GameDetailApiModel {
+  const _GameDetailApiModel({
+    this.descriptionRaw,
+  });
+
+  @JsonKey(name: 'description_raw')
+  final String? descriptionRaw;
+
+  factory _GameDetailApiModel.fromJson(Map<String, dynamic> json) =>
+      _$GameDetailApiModelFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class _ScreenshotApiModel {
+  const _ScreenshotApiModel({required this.image});
+
+  final String image;
+
+  factory _ScreenshotApiModel.fromJson(Map<String, dynamic> json) =>
+      _$ScreenshotApiModelFromJson(json);
 }
 
 class ReelsRepository {
@@ -66,9 +117,36 @@ class ReelsRepository {
             imageUrl: e.backgroundImage ?? '',
             rating: e.rating,
             genres: e.genres.map((g) => g.name).toList(),
+            metacritic: e.metacritic,
+            platforms: e.platforms.map((p) => p.platform.name).toList(),
+            playtime: e.playtime,
           ),
         )
         .toList();
     return (games: games, hasMore: hasMore);
+  }
+
+  Future<({String description, List<String> screenshots})> fetchGameDetail(
+    String id,
+  ) async {
+    final detailFuture = _dio.get<Map<String, dynamic>>('/games/$id');
+    final screenshotsFuture =
+        _dio.get<Map<String, dynamic>>('/games/$id/screenshots');
+
+    final responses = await Future.wait([detailFuture, screenshotsFuture]);
+
+    final detail =
+        _GameDetailApiModel.fromJson(responses[0].data!);
+    final screenshotResults =
+        responses[1].data!['results'] as List<dynamic>;
+    final screenshots = screenshotResults
+        .map((e) => _ScreenshotApiModel.fromJson(e as Map<String, dynamic>))
+        .map((e) => e.image)
+        .toList();
+
+    return (
+      description: detail.descriptionRaw ?? '',
+      screenshots: screenshots,
+    );
   }
 }

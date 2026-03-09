@@ -10,5 +10,10 @@ class ReelGame with _$ReelGame {
     required String imageUrl,
     required double rating,
     required List<String> genres,
+    @Default(null) int? metacritic,
+    @Default([]) List<String> platforms,
+    @Default(0) int playtime,
+    @Default('') String description,
+    @Default([]) List<String> screenshots,
   }) = _ReelGame;
 }

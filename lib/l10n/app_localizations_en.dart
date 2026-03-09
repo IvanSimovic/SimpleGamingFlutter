@@ -54,5 +54,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delete => 'Delete';
 
   @override
+  String get cancel => 'Cancel';
+
+  @override
   String get reelsEmpty => 'No more games to discover';
 }

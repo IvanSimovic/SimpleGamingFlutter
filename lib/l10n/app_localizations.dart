@@ -184,6 +184,12 @@ abstract class AppLocalizations {
   /// **'Delete'**
   String get delete;
 
+  /// Cancel action label
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
   /// Empty state message on the Reels screen
   ///
   /// In en, this message translates to:

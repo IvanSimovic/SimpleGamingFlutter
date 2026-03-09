@@ -20,20 +20,20 @@ mixin _$FavouriteGamesState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() normal,
-    required TResult Function(Set<String> selectedIds) selecting,
-    required TResult Function() deleting,
+    required TResult Function(String gameId) selecting,
+    required TResult Function(String gameId) deleting,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? normal,
-    TResult? Function(Set<String> selectedIds)? selecting,
-    TResult? Function()? deleting,
+    TResult? Function(String gameId)? selecting,
+    TResult? Function(String gameId)? deleting,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? normal,
-    TResult Function(Set<String> selectedIds)? selecting,
-    TResult Function()? deleting,
+    TResult Function(String gameId)? selecting,
+    TResult Function(String gameId)? deleting,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -124,8 +124,8 @@ class _$FavouriteGamesNormalImpl implements FavouriteGamesNormal {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() normal,
-    required TResult Function(Set<String> selectedIds) selecting,
-    required TResult Function() deleting,
+    required TResult Function(String gameId) selecting,
+    required TResult Function(String gameId) deleting,
   }) {
     return normal();
   }
@@ -134,8 +134,8 @@ class _$FavouriteGamesNormalImpl implements FavouriteGamesNormal {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? normal,
-    TResult? Function(Set<String> selectedIds)? selecting,
-    TResult? Function()? deleting,
+    TResult? Function(String gameId)? selecting,
+    TResult? Function(String gameId)? deleting,
   }) {
     return normal?.call();
   }
@@ -144,8 +144,8 @@ class _$FavouriteGamesNormalImpl implements FavouriteGamesNormal {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? normal,
-    TResult Function(Set<String> selectedIds)? selecting,
-    TResult Function()? deleting,
+    TResult Function(String gameId)? selecting,
+    TResult Function(String gameId)? deleting,
     required TResult orElse(),
   }) {
     if (normal != null) {
@@ -200,7 +200,7 @@ abstract class _$$FavouriteGamesSelectingImplCopyWith<$Res> {
     $Res Function(_$FavouriteGamesSelectingImpl) then,
   ) = __$$FavouriteGamesSelectingImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Set<String> selectedIds});
+  $Res call({String gameId});
 }
 
 /// @nodoc
@@ -217,13 +217,13 @@ class __$$FavouriteGamesSelectingImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? selectedIds = null}) {
+  $Res call({Object? gameId = null}) {
     return _then(
       _$FavouriteGamesSelectingImpl(
-        selectedIds: null == selectedIds
-            ? _value._selectedIds
-            : selectedIds // ignore: cast_nullable_to_non_nullable
-                  as Set<String>,
+        gameId: null == gameId
+            ? _value.gameId
+            : gameId // ignore: cast_nullable_to_non_nullable
+                  as String,
       ),
     );
   }
@@ -232,20 +232,14 @@ class __$$FavouriteGamesSelectingImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$FavouriteGamesSelectingImpl implements FavouriteGamesSelecting {
-  const _$FavouriteGamesSelectingImpl({required final Set<String> selectedIds})
-    : _selectedIds = selectedIds;
+  const _$FavouriteGamesSelectingImpl({required this.gameId});
 
-  final Set<String> _selectedIds;
   @override
-  Set<String> get selectedIds {
-    if (_selectedIds is EqualUnmodifiableSetView) return _selectedIds;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableSetView(_selectedIds);
-  }
+  final String gameId;
 
   @override
   String toString() {
-    return 'FavouriteGamesState.selecting(selectedIds: $selectedIds)';
+    return 'FavouriteGamesState.selecting(gameId: $gameId)';
   }
 
   @override
@@ -253,17 +247,11 @@ class _$FavouriteGamesSelectingImpl implements FavouriteGamesSelecting {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FavouriteGamesSelectingImpl &&
-            const DeepCollectionEquality().equals(
-              other._selectedIds,
-              _selectedIds,
-            ));
+            (identical(other.gameId, gameId) || other.gameId == gameId));
   }
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    const DeepCollectionEquality().hash(_selectedIds),
-  );
+  int get hashCode => Object.hash(runtimeType, gameId);
 
   /// Create a copy of FavouriteGamesState
   /// with the given fields replaced by the non-null parameter values.
@@ -280,32 +268,32 @@ class _$FavouriteGamesSelectingImpl implements FavouriteGamesSelecting {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() normal,
-    required TResult Function(Set<String> selectedIds) selecting,
-    required TResult Function() deleting,
+    required TResult Function(String gameId) selecting,
+    required TResult Function(String gameId) deleting,
   }) {
-    return selecting(selectedIds);
+    return selecting(gameId);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? normal,
-    TResult? Function(Set<String> selectedIds)? selecting,
-    TResult? Function()? deleting,
+    TResult? Function(String gameId)? selecting,
+    TResult? Function(String gameId)? deleting,
   }) {
-    return selecting?.call(selectedIds);
+    return selecting?.call(gameId);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? normal,
-    TResult Function(Set<String> selectedIds)? selecting,
-    TResult Function()? deleting,
+    TResult Function(String gameId)? selecting,
+    TResult Function(String gameId)? deleting,
     required TResult orElse(),
   }) {
     if (selecting != null) {
-      return selecting(selectedIds);
+      return selecting(gameId);
     }
     return orElse();
   }
@@ -346,11 +334,10 @@ class _$FavouriteGamesSelectingImpl implements FavouriteGamesSelecting {
 }
 
 abstract class FavouriteGamesSelecting implements FavouriteGamesState {
-  const factory FavouriteGamesSelecting({
-    required final Set<String> selectedIds,
-  }) = _$FavouriteGamesSelectingImpl;
+  const factory FavouriteGamesSelecting({required final String gameId}) =
+      _$FavouriteGamesSelectingImpl;
 
-  Set<String> get selectedIds;
+  String get gameId;
 
   /// Create a copy of FavouriteGamesState
   /// with the given fields replaced by the non-null parameter values.
@@ -365,6 +352,8 @@ abstract class _$$FavouriteGamesDeletingImplCopyWith<$Res> {
     _$FavouriteGamesDeletingImpl value,
     $Res Function(_$FavouriteGamesDeletingImpl) then,
   ) = __$$FavouriteGamesDeletingImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String gameId});
 }
 
 /// @nodoc
@@ -379,58 +368,86 @@ class __$$FavouriteGamesDeletingImplCopyWithImpl<$Res>
 
   /// Create a copy of FavouriteGamesState
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? gameId = null}) {
+    return _then(
+      _$FavouriteGamesDeletingImpl(
+        gameId: null == gameId
+            ? _value.gameId
+            : gameId // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
 }
 
 /// @nodoc
 
 class _$FavouriteGamesDeletingImpl implements FavouriteGamesDeleting {
-  const _$FavouriteGamesDeletingImpl();
+  const _$FavouriteGamesDeletingImpl({required this.gameId});
+
+  @override
+  final String gameId;
 
   @override
   String toString() {
-    return 'FavouriteGamesState.deleting()';
+    return 'FavouriteGamesState.deleting(gameId: $gameId)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FavouriteGamesDeletingImpl);
+            other is _$FavouriteGamesDeletingImpl &&
+            (identical(other.gameId, gameId) || other.gameId == gameId));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, gameId);
+
+  /// Create a copy of FavouriteGamesState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FavouriteGamesDeletingImplCopyWith<_$FavouriteGamesDeletingImpl>
+  get copyWith =>
+      __$$FavouriteGamesDeletingImplCopyWithImpl<_$FavouriteGamesDeletingImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() normal,
-    required TResult Function(Set<String> selectedIds) selecting,
-    required TResult Function() deleting,
+    required TResult Function(String gameId) selecting,
+    required TResult Function(String gameId) deleting,
   }) {
-    return deleting();
+    return deleting(gameId);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? normal,
-    TResult? Function(Set<String> selectedIds)? selecting,
-    TResult? Function()? deleting,
+    TResult? Function(String gameId)? selecting,
+    TResult? Function(String gameId)? deleting,
   }) {
-    return deleting?.call();
+    return deleting?.call(gameId);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? normal,
-    TResult Function(Set<String> selectedIds)? selecting,
-    TResult Function()? deleting,
+    TResult Function(String gameId)? selecting,
+    TResult Function(String gameId)? deleting,
     required TResult orElse(),
   }) {
     if (deleting != null) {
-      return deleting();
+      return deleting(gameId);
     }
     return orElse();
   }
@@ -471,5 +488,14 @@ class _$FavouriteGamesDeletingImpl implements FavouriteGamesDeleting {
 }
 
 abstract class FavouriteGamesDeleting implements FavouriteGamesState {
-  const factory FavouriteGamesDeleting() = _$FavouriteGamesDeletingImpl;
+  const factory FavouriteGamesDeleting({required final String gameId}) =
+      _$FavouriteGamesDeletingImpl;
+
+  String get gameId;
+
+  /// Create a copy of FavouriteGamesState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FavouriteGamesDeletingImplCopyWith<_$FavouriteGamesDeletingImpl>
+  get copyWith => throw _privateConstructorUsedError;
 }

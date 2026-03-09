@@ -22,6 +22,11 @@ mixin _$ReelGame {
   String get imageUrl => throw _privateConstructorUsedError;
   double get rating => throw _privateConstructorUsedError;
   List<String> get genres => throw _privateConstructorUsedError;
+  int? get metacritic => throw _privateConstructorUsedError;
+  List<String> get platforms => throw _privateConstructorUsedError;
+  int get playtime => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
+  List<String> get screenshots => throw _privateConstructorUsedError;
 
   /// Create a copy of ReelGame
   /// with the given fields replaced by the non-null parameter values.
@@ -41,6 +46,11 @@ abstract class $ReelGameCopyWith<$Res> {
     String imageUrl,
     double rating,
     List<String> genres,
+    int? metacritic,
+    List<String> platforms,
+    int playtime,
+    String description,
+    List<String> screenshots,
   });
 }
 
@@ -64,6 +74,11 @@ class _$ReelGameCopyWithImpl<$Res, $Val extends ReelGame>
     Object? imageUrl = null,
     Object? rating = null,
     Object? genres = null,
+    Object? metacritic = freezed,
+    Object? platforms = null,
+    Object? playtime = null,
+    Object? description = null,
+    Object? screenshots = null,
   }) {
     return _then(
       _value.copyWith(
@@ -87,6 +102,26 @@ class _$ReelGameCopyWithImpl<$Res, $Val extends ReelGame>
                 ? _value.genres
                 : genres // ignore: cast_nullable_to_non_nullable
                       as List<String>,
+            metacritic: freezed == metacritic
+                ? _value.metacritic
+                : metacritic // ignore: cast_nullable_to_non_nullable
+                      as int?,
+            platforms: null == platforms
+                ? _value.platforms
+                : platforms // ignore: cast_nullable_to_non_nullable
+                      as List<String>,
+            playtime: null == playtime
+                ? _value.playtime
+                : playtime // ignore: cast_nullable_to_non_nullable
+                      as int,
+            description: null == description
+                ? _value.description
+                : description // ignore: cast_nullable_to_non_nullable
+                      as String,
+            screenshots: null == screenshots
+                ? _value.screenshots
+                : screenshots // ignore: cast_nullable_to_non_nullable
+                      as List<String>,
           )
           as $Val,
     );
@@ -108,6 +143,11 @@ abstract class _$$ReelGameImplCopyWith<$Res>
     String imageUrl,
     double rating,
     List<String> genres,
+    int? metacritic,
+    List<String> platforms,
+    int playtime,
+    String description,
+    List<String> screenshots,
   });
 }
 
@@ -130,6 +170,11 @@ class __$$ReelGameImplCopyWithImpl<$Res>
     Object? imageUrl = null,
     Object? rating = null,
     Object? genres = null,
+    Object? metacritic = freezed,
+    Object? platforms = null,
+    Object? playtime = null,
+    Object? description = null,
+    Object? screenshots = null,
   }) {
     return _then(
       _$ReelGameImpl(
@@ -153,6 +198,26 @@ class __$$ReelGameImplCopyWithImpl<$Res>
             ? _value._genres
             : genres // ignore: cast_nullable_to_non_nullable
                   as List<String>,
+        metacritic: freezed == metacritic
+            ? _value.metacritic
+            : metacritic // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        platforms: null == platforms
+            ? _value._platforms
+            : platforms // ignore: cast_nullable_to_non_nullable
+                  as List<String>,
+        playtime: null == playtime
+            ? _value.playtime
+            : playtime // ignore: cast_nullable_to_non_nullable
+                  as int,
+        description: null == description
+            ? _value.description
+            : description // ignore: cast_nullable_to_non_nullable
+                  as String,
+        screenshots: null == screenshots
+            ? _value._screenshots
+            : screenshots // ignore: cast_nullable_to_non_nullable
+                  as List<String>,
       ),
     );
   }
@@ -167,7 +232,14 @@ class _$ReelGameImpl implements _ReelGame {
     required this.imageUrl,
     required this.rating,
     required final List<String> genres,
-  }) : _genres = genres;
+    this.metacritic = null,
+    final List<String> platforms = const [],
+    this.playtime = 0,
+    this.description = '',
+    final List<String> screenshots = const [],
+  }) : _genres = genres,
+       _platforms = platforms,
+       _screenshots = screenshots;
 
   @override
   final String id;
@@ -186,8 +258,35 @@ class _$ReelGameImpl implements _ReelGame {
   }
 
   @override
+  @JsonKey()
+  final int? metacritic;
+  final List<String> _platforms;
+  @override
+  @JsonKey()
+  List<String> get platforms {
+    if (_platforms is EqualUnmodifiableListView) return _platforms;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_platforms);
+  }
+
+  @override
+  @JsonKey()
+  final int playtime;
+  @override
+  @JsonKey()
+  final String description;
+  final List<String> _screenshots;
+  @override
+  @JsonKey()
+  List<String> get screenshots {
+    if (_screenshots is EqualUnmodifiableListView) return _screenshots;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_screenshots);
+  }
+
+  @override
   String toString() {
-    return 'ReelGame(id: $id, name: $name, imageUrl: $imageUrl, rating: $rating, genres: $genres)';
+    return 'ReelGame(id: $id, name: $name, imageUrl: $imageUrl, rating: $rating, genres: $genres, metacritic: $metacritic, platforms: $platforms, playtime: $playtime, description: $description, screenshots: $screenshots)';
   }
 
   @override
@@ -200,7 +299,21 @@ class _$ReelGameImpl implements _ReelGame {
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
             (identical(other.rating, rating) || other.rating == rating) &&
-            const DeepCollectionEquality().equals(other._genres, _genres));
+            const DeepCollectionEquality().equals(other._genres, _genres) &&
+            (identical(other.metacritic, metacritic) ||
+                other.metacritic == metacritic) &&
+            const DeepCollectionEquality().equals(
+              other._platforms,
+              _platforms,
+            ) &&
+            (identical(other.playtime, playtime) ||
+                other.playtime == playtime) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            const DeepCollectionEquality().equals(
+              other._screenshots,
+              _screenshots,
+            ));
   }
 
   @override
@@ -211,6 +324,11 @@ class _$ReelGameImpl implements _ReelGame {
     imageUrl,
     rating,
     const DeepCollectionEquality().hash(_genres),
+    metacritic,
+    const DeepCollectionEquality().hash(_platforms),
+    playtime,
+    description,
+    const DeepCollectionEquality().hash(_screenshots),
   );
 
   /// Create a copy of ReelGame
@@ -229,6 +347,11 @@ abstract class _ReelGame implements ReelGame {
     required final String imageUrl,
     required final double rating,
     required final List<String> genres,
+    final int? metacritic,
+    final List<String> platforms,
+    final int playtime,
+    final String description,
+    final List<String> screenshots,
   }) = _$ReelGameImpl;
 
   @override
@@ -241,6 +364,16 @@ abstract class _ReelGame implements ReelGame {
   double get rating;
   @override
   List<String> get genres;
+  @override
+  int? get metacritic;
+  @override
+  List<String> get platforms;
+  @override
+  int get playtime;
+  @override
+  String get description;
+  @override
+  List<String> get screenshots;
 
   /// Create a copy of ReelGame
   /// with the given fields replaced by the non-null parameter values.

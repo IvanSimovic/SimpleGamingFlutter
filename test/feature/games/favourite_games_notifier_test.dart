@@ -35,81 +35,18 @@ void main() {
 
   group('onLongPress', () {
     test('enters selecting state with the pressed game id', () {
-      container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .onLongPress('game-1');
+      container.read(favouriteGamesNotifierProvider.notifier).onLongPress('game-1');
 
       final state = container.read(favouriteGamesNotifierProvider);
       expect(state, isA<FavouriteGamesSelecting>());
-      expect((state as FavouriteGamesSelecting).selectedIds, {'game-1'});
-    });
-  });
-
-  group('onTap', () {
-    test('adding a second game extends the selection', () {
-      container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .onLongPress('game-1');
-      container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .onTap('game-2');
-
-      final state = container.read(favouriteGamesNotifierProvider);
-      expect((state as FavouriteGamesSelecting).selectedIds,
-          {'game-1', 'game-2'});
-    });
-
-    test('deselecting the only selected game returns to normal', () {
-      container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .onLongPress('game-1');
-      container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .onTap('game-1');
-
-      expect(
-        container.read(favouriteGamesNotifierProvider),
-        isA<FavouriteGamesNormal>(),
-      );
-    });
-
-    test('deselecting one of multiple selected games keeps selecting state',
-        () {
-      container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .onLongPress('game-1');
-      container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .onTap('game-2');
-      container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .onTap('game-1');
-
-      final state = container.read(favouriteGamesNotifierProvider);
-      expect(state, isA<FavouriteGamesSelecting>());
-      expect((state as FavouriteGamesSelecting).selectedIds, {'game-2'});
-    });
-
-    test('tap is ignored when not in selecting state', () {
-      container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .onTap('game-1');
-
-      expect(
-        container.read(favouriteGamesNotifierProvider),
-        isA<FavouriteGamesNormal>(),
-      );
+      expect((state as FavouriteGamesSelecting).gameId, 'game-1');
     });
   });
 
   group('cancelSelection', () {
     test('returns to normal from selecting state', () {
-      container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .onLongPress('game-1');
-      container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .cancelSelection();
+      container.read(favouriteGamesNotifierProvider.notifier).onLongPress('game-1');
+      container.read(favouriteGamesNotifierProvider.notifier).cancelSelection();
 
       expect(
         container.read(favouriteGamesNotifierProvider),
@@ -118,16 +55,11 @@ void main() {
     });
   });
 
-  group('deleteSelected', () {
+  group('delete', () {
     test('successful delete returns to normal state', () async {
+      container.read(favouriteGamesNotifierProvider.notifier).onLongPress('game-1');
       await container.read(authStateProvider.future);
-      container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .onLongPress('game-1');
-
-      await container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .deleteSelected();
+      await container.read(favouriteGamesNotifierProvider.notifier).delete();
 
       expect(
         container.read(favouriteGamesNotifierProvider),
@@ -135,49 +67,33 @@ void main() {
       );
     });
 
-    test('successful delete calls removeFavouriteGame for each selected id',
-        () async {
+    test('successful delete calls removeFavouriteGame with the selected id', () async {
+      container.read(favouriteGamesNotifierProvider.notifier).onLongPress('game-1');
       await container.read(authStateProvider.future);
-      container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .onLongPress('game-1');
-      container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .onTap('game-2');
+      await container.read(favouriteGamesNotifierProvider.notifier).delete();
 
-      await container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .deleteSelected();
-
-      expect(fakeRepo.removedIds, containsAll(['game-1', 'game-2']));
+      expect(fakeRepo.removedIds, contains('game-1'));
     });
 
-    test('repository failure restores selecting state with original ids',
-        () async {
+    test('repository failure restores selecting state with original id', () async {
       fakeRepo.removeException = Exception('firestore error');
+      container.read(favouriteGamesNotifierProvider.notifier).onLongPress('game-1');
       await container.read(authStateProvider.future);
-      container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .onLongPress('game-1');
-
-      await container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .deleteSelected();
+      await container.read(favouriteGamesNotifierProvider.notifier).delete();
 
       final state = container.read(favouriteGamesNotifierProvider);
       expect(state, isA<FavouriteGamesSelecting>());
-      expect((state as FavouriteGamesSelecting).selectedIds, {'game-1'});
+      expect((state as FavouriteGamesSelecting).gameId, 'game-1');
     });
 
     test('no-op when not in selecting state', () async {
-      await container
-          .read(favouriteGamesNotifierProvider.notifier)
-          .deleteSelected();
+      await container.read(favouriteGamesNotifierProvider.notifier).delete();
 
       expect(
         container.read(favouriteGamesNotifierProvider),
         isA<FavouriteGamesNormal>(),
       );
+      expect(fakeRepo.removedIds, isEmpty);
     });
   });
 }

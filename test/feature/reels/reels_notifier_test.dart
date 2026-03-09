@@ -208,6 +208,59 @@ void main() {
     });
   });
 
+  group('loadDetail', () {
+    test('populates description and screenshots after page becomes visible',
+        () async {
+      fakeReelsRepo
+        ..fetchResult = _fakeGames(5)
+        ..detailDescription = 'A great game'
+        ..detailScreenshots = ['https://example.com/shot1.jpg'];
+      buildContainer();
+      await pumpInit();
+      await Future.delayed(Duration.zero); // allow detail loads to complete
+
+      final game =
+          (container.read(reelsNotifierProvider) as ReelsContent).games.first;
+      expect(game.description, 'A great game');
+      expect(game.screenshots, ['https://example.com/shot1.jpg']);
+    });
+
+    test('does not fetch detail twice for the same game', () async {
+      fakeReelsRepo
+        ..fetchResult = _fakeGames(5)
+        ..hasMore = true;
+      buildContainer();
+      await pumpInit();
+      await Future.delayed(Duration.zero);
+
+      // game-0 was already loaded on init — onPageChanged should not re-fetch.
+      container.read(reelsNotifierProvider.notifier).onPageChanged(0);
+      await Future.delayed(Duration.zero);
+
+      expect(
+        fakeReelsRepo.detailRequestedIds
+            .where((id) => id == 'game-0')
+            .length,
+        1,
+      );
+    });
+
+    test('detail load failure leaves game with empty description and screenshots',
+        () async {
+      fakeReelsRepo
+        ..fetchResult = _fakeGames(5)
+        ..detailException = Exception('network error');
+      buildContainer();
+      await pumpInit();
+      await Future.delayed(Duration.zero);
+
+      final game =
+          (container.read(reelsNotifierProvider) as ReelsContent).games.first;
+      expect(game.description, '');
+      expect(game.screenshots, isEmpty);
+    });
+  });
+
   group('toggleFavourite', () {
     test('adds to favouritingIds while in flight then clears on success',
         () async {

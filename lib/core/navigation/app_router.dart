@@ -31,15 +31,15 @@ GoRouter buildRouter(WidgetRef ref) => GoRouter(
   refreshListenable: _AuthStateListenable(ref),
   routes: [
     GoRoute(path: AppRoutes.login, builder: (_, __) => const LoginScreen()),
+    GoRoute(
+      path: AppRoutes.addGame,
+      builder: (context, __) =>
+          AddGameScreen(onNavigateBack: () => context.pop()),
+    ),
     ShellRoute(
       builder: (context, state, child) => _MainShell(child: child),
       routes: [
         GoRoute(path: AppRoutes.reels, builder: (_, __) => const ReelsScreen()),
-        GoRoute(
-          path: AppRoutes.addGame,
-          builder: (context, __) =>
-              AddGameScreen(onNavigateBack: () => context.go(AppRoutes.reels)),
-        ),
         GoRoute(
           path: AppRoutes.favourites,
           builder: (_, __) => const FavouriteGamesScreen(),
@@ -66,9 +66,16 @@ class _MainShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final location = GoRouterState.of(context).matchedLocation;
+    final onFavourites = location == AppRoutes.favourites;
 
     return Scaffold(
       body: child,
+      floatingActionButton: onFavourites
+          ? FloatingActionButton(
+              onPressed: () => context.push(AppRoutes.addGame),
+              child: const Icon(Icons.add),
+            )
+          : null,
       bottomNavigationBar: NavigationBar(
         selectedIndex: _indexForLocation(location),
         onDestinationSelected: (index) => context.go(_locationForIndex(index)),
@@ -76,10 +83,6 @@ class _MainShell extends StatelessWidget {
           NavigationDestination(
             icon: const Icon(Icons.movie),
             label: context.l10n.navReels,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.add),
-            label: context.l10n.navAdd,
           ),
           NavigationDestination(
             icon: const Icon(Icons.favorite),
@@ -92,15 +95,13 @@ class _MainShell extends StatelessWidget {
 
   int _indexForLocation(String location) => switch (location) {
     AppRoutes.reels => 0,
-    AppRoutes.addGame => 1,
-    AppRoutes.favourites => 2,
+    AppRoutes.favourites => 1,
     _ => 0,
   };
 
   String _locationForIndex(int index) => switch (index) {
     0 => AppRoutes.reels,
-    1 => AppRoutes.addGame,
-    2 => AppRoutes.favourites,
+    1 => AppRoutes.favourites,
     _ => AppRoutes.reels,
   };
 }

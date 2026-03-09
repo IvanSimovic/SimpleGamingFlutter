@@ -9,10 +9,9 @@ import 'package:simple_gaming_flutter/feature/reels/reels_state.dart';
 class ReelsNotifier extends AutoDisposeNotifier<ReelsState> {
   static const _prefetchThreshold = 5;
 
-  // Shared cancellation flag — set once in build() via ref.onDispose.
-  // All async methods check this before touching state after an await.
   bool _cancelled = false;
   int _nextPage = 1;
+  final Set<String> _detailLoadedIds = {};
 
   @override
   ReelsState build() {
@@ -39,6 +38,8 @@ class ReelsNotifier extends AutoDisposeNotifier<ReelsState> {
         hasReachedEnd: !result.hasMore,
         favouritingIds: {},
       );
+      _loadDetail(0);
+      _loadDetail(1);
     } catch (_) {
       if (_cancelled) return;
       state = const ReelsState.error();
@@ -50,6 +51,8 @@ class ReelsNotifier extends AutoDisposeNotifier<ReelsState> {
     if (current is! ReelsContent) return;
     final updated = current.copyWith(currentIndex: index);
     state = updated;
+    _loadDetail(index);
+    _loadDetail(index + 1);
     _maybeLoadMore(updated);
   }
 
@@ -62,11 +65,39 @@ class ReelsNotifier extends AutoDisposeNotifier<ReelsState> {
     _loadMore();
   }
 
+  Future<void> _loadDetail(int index) async {
+    final current = state;
+    if (current is! ReelsContent) return;
+    final game = current.games.elementAtOrNull(index);
+    if (game == null) return;
+    if (_detailLoadedIds.contains(game.id)) return;
+    _detailLoadedIds.add(game.id);
+    try {
+      final detail = await ref
+          .read(reelsRepositoryProvider)
+          .fetchGameDetail(game.id);
+      if (_cancelled) return;
+      final currentAfterFetch = state;
+      if (currentAfterFetch is! ReelsContent) return;
+      final gameIndex = currentAfterFetch.games.indexWhere((g) => g.id == game.id);
+      if (gameIndex == -1) return;
+      final updatedGames = List<dynamic>.from(currentAfterFetch.games);
+      updatedGames[gameIndex] = currentAfterFetch.games[gameIndex].copyWith(
+        description: detail.description,
+        screenshots: detail.screenshots,
+      );
+      state = currentAfterFetch.copyWith(
+        games: List.unmodifiable(updatedGames.cast()),
+      );
+    } catch (_) {
+      // Detail unavailable — card shows without description/screenshots.
+      // ID stays in _detailLoadedIds to avoid retrying on every swipe.
+    }
+  }
+
   Future<void> _loadMore() async {
     final current = state;
     if (current is! ReelsContent) return;
-    // Set isLoadingMore synchronously before the first await so the guard
-    // in _maybeLoadMore sees it on the next onPageChanged call.
     state = current.copyWith(isLoadingMore: true);
     try {
       final result = await ref
@@ -85,7 +116,6 @@ class ReelsNotifier extends AutoDisposeNotifier<ReelsState> {
       if (_cancelled) return;
       final currentAfterError = state;
       if (currentAfterError is! ReelsContent) return;
-      // Revert loading flag so _maybeLoadMore can retry on next swipe.
       state = currentAfterError.copyWith(isLoadingMore: false);
     }
   }
@@ -93,7 +123,6 @@ class ReelsNotifier extends AutoDisposeNotifier<ReelsState> {
   Future<void> toggleFavourite(String gameId) async {
     final current = state;
     if (current is! ReelsContent) return;
-    // Prevent duplicate in-flight requests for the same game.
     if (current.favouritingIds.contains(gameId)) return;
 
     final userId = ref.read(authStateProvider).valueOrNull?.uid;

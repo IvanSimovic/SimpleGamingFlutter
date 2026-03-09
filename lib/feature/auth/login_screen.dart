@@ -18,8 +18,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailFocus = FocusNode();
   final _passwordFocus = FocusNode();
 
-  var _email = '';
-  var _password = '';
+  var _email = 'test@gmail.com';
+  var _password = 'test21';
 
   @override
   void dispose() {
