@@ -21,7 +21,7 @@ class App extends ConsumerWidget {
     title: 'Gaming Flutter',
     theme: AppTheme.light(),
     darkTheme: AppTheme.dark(),
-    themeMode: ThemeMode.dark,
+    themeMode: ThemeMode.system,
     routerConfig: buildRouter(ref),
     localizationsDelegates: const [
       AppLocalizations.delegate,
