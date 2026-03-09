@@ -51,6 +51,9 @@ dev_dependencies:
   # dart_code_metrics incompatible with current riverpod_generator (uuid version conflict)
   # revisit when a compatible version is available
 
+  # Testing
+  mocktail: ^0.3.0
+
   # Code generation
   build_runner: ^2.4.0
   freezed: ^2.5.0
