@@ -19,6 +19,18 @@
   "loginSignInFailed": "Sign in failed",
   "@loginSignInFailed": { "description": "Generic error when sign in fails" },
 
+  "search": "Search",
+  "@search": { "description": "Search field label" },
+
+  "noResults": "No results found",
+  "@noResults": { "description": "Empty state message when a search returns no results" },
+
+  "errorGeneric": "Something went wrong",
+  "@errorGeneric": { "description": "Generic error message" },
+
+  "addGameTitle": "Add Game",
+  "@addGameTitle": { "description": "Title for the Add Game screen" },
+
   "navReels": "Reels",
   "@navReels": { "description": "Bottom nav label for Reels tab" },
 

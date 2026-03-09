@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:simple_gaming_flutter/core/l10n/l10n_extension.dart';
 import 'package:simple_gaming_flutter/feature/auth/auth_providers.dart';
 import 'package:simple_gaming_flutter/feature/auth/login_screen.dart';
+import 'package:simple_gaming_flutter/feature/games/add_game_screen.dart';
 
 // Route paths
 abstract final class AppRoutes {
@@ -40,8 +41,9 @@ GoRouter buildRouter(WidgetRef ref) => GoRouter(
             ),
             GoRoute(
               path: AppRoutes.addGame,
-              builder: (_, __) =>
-                  const _PlaceholderScreen(label: 'Add Game'),
+              builder: (context, __) => AddGameScreen(
+                onNavigateBack: () => context.go(AppRoutes.reels),
+              ),
             ),
             GoRoute(
               path: AppRoutes.favourites,

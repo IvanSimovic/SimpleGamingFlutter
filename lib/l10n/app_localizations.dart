@@ -130,6 +130,30 @@ abstract class AppLocalizations {
   /// **'Sign in failed'**
   String get loginSignInFailed;
 
+  /// Search field label
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
+
+  /// Empty state message when a search returns no results
+  ///
+  /// In en, this message translates to:
+  /// **'No results found'**
+  String get noResults;
+
+  /// Generic error message
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get errorGeneric;
+
+  /// Title for the Add Game screen
+  ///
+  /// In en, this message translates to:
+  /// **'Add Game'**
+  String get addGameTitle;
+
   /// Bottom nav label for Reels tab
   ///
   /// In en, this message translates to:

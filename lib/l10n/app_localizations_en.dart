@@ -27,6 +27,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginSignInFailed => 'Sign in failed';
 
   @override
+  String get search => 'Search';
+
+  @override
+  String get noResults => 'No results found';
+
+  @override
+  String get errorGeneric => 'Something went wrong';
+
+  @override
+  String get addGameTitle => 'Add Game';
+
+  @override
   String get navReels => 'Reels';
 
   @override
