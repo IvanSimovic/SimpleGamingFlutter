@@ -67,7 +67,8 @@ lib/
 
 ```yaml
 # Code quality
-dart_code_metrics: ^5.x
+# dart_code_metrics dropped — version conflict with riverpod_generator (uuid mismatch)
+# flutter analyze + dart format cover lint and formatting in the meantime
 
 # State
 flutter_riverpod: ^2.x
