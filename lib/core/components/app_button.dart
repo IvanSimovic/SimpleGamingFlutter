@@ -17,24 +17,22 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FilledButton(
-        onPressed: enabled && !isLoading ? onPressed : null,
-        style: FilledButton.styleFrom(
-          minimumSize: const Size.fromHeight(52),
-          backgroundColor: context.colors.brandPrimary,
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-        child: isLoading
-            ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Colors.white,
-                ),
-              )
-            : Text(text, style: context.typo.body6),
-      );
+    onPressed: enabled && !isLoading ? onPressed : null,
+    style: FilledButton.styleFrom(
+      minimumSize: const Size.fromHeight(52),
+      backgroundColor: context.colors.brandPrimary,
+      foregroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    ),
+    child: isLoading
+        ? const SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: Colors.white,
+            ),
+          )
+        : Text(text, style: context.typo.body6),
+  );
 }

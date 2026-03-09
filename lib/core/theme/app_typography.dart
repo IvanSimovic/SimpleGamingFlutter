@@ -59,21 +59,20 @@ class AppTypography extends ThemeExtension<AppTypography> {
     TextStyle? body5,
     TextStyle? body6,
     TextStyle? body7,
-  }) =>
-      AppTypography(
-        head1: head1 ?? this.head1,
-        head2: head2 ?? this.head2,
-        head3: head3 ?? this.head3,
-        head4: head4 ?? this.head4,
-        head5: head5 ?? this.head5,
-        body1: body1 ?? this.body1,
-        body2: body2 ?? this.body2,
-        body3: body3 ?? this.body3,
-        body4: body4 ?? this.body4,
-        body5: body5 ?? this.body5,
-        body6: body6 ?? this.body6,
-        body7: body7 ?? this.body7,
-      );
+  }) => AppTypography(
+    head1: head1 ?? this.head1,
+    head2: head2 ?? this.head2,
+    head3: head3 ?? this.head3,
+    head4: head4 ?? this.head4,
+    head5: head5 ?? this.head5,
+    body1: body1 ?? this.body1,
+    body2: body2 ?? this.body2,
+    body3: body3 ?? this.body3,
+    body4: body4 ?? this.body4,
+    body5: body5 ?? this.body5,
+    body6: body6 ?? this.body6,
+    body7: body7 ?? this.body7,
+  );
 
   @override
   AppTypography lerp(AppTypography? other, double t) {

@@ -7,21 +7,21 @@ class AppTheme {
   static ThemeData dark() => _build(AppColors.dark, Brightness.dark);
 
   static ThemeData _build(AppColors colors, Brightness brightness) => ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme(
-          brightness: brightness,
-          primary: colors.brandPrimary,
-          onPrimary: Colors.white,
-          secondary: colors.brandPrimary,
-          onSecondary: Colors.white,
-          error: colors.error,
-          onError: Colors.white,
-          surface: colors.surfaceHigh,
-          onSurface: colors.textMain,
-        ),
-        scaffoldBackgroundColor: colors.surfaceDeep,
-        extensions: [colors, AppTypography.standard],
-      );
+    useMaterial3: true,
+    colorScheme: ColorScheme(
+      brightness: brightness,
+      primary: colors.brandPrimary,
+      onPrimary: Colors.white,
+      secondary: colors.brandPrimary,
+      onSecondary: Colors.white,
+      error: colors.error,
+      onError: Colors.white,
+      surface: colors.surfaceHigh,
+      onSurface: colors.textMain,
+    ),
+    scaffoldBackgroundColor: colors.surfaceDeep,
+    extensions: [colors, AppTypography.standard],
+  );
 }
 
 // Convenient context accessors — equivalent of Android's AppTheme.color / AppTheme.typo

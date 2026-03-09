@@ -30,8 +30,9 @@ class AddGameNotifier extends AutoDisposeNotifier<AddGameState> {
 
   Future<void> _search(String query) async {
     try {
-      final results =
-          await ref.read(gamesRepositoryProvider).searchGames(query);
+      final results = await ref
+          .read(gamesRepositoryProvider)
+          .searchGames(query);
       state = results.isEmpty
           ? const AddGameState.empty()
           : AddGameState.content(results);
@@ -53,5 +54,4 @@ class AddGameNotifier extends AutoDisposeNotifier<AddGameState> {
       state = const AddGameState.error();
     }
   }
-
 }

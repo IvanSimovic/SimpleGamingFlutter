@@ -87,18 +87,17 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? success,
     Color? warning,
     Color? error,
-  }) =>
-      AppColors(
-        brandPrimary: brandPrimary ?? this.brandPrimary,
-        surfaceDeep: surfaceDeep ?? this.surfaceDeep,
-        surfaceHigh: surfaceHigh ?? this.surfaceHigh,
-        textMain: textMain ?? this.textMain,
-        textMuted: textMuted ?? this.textMuted,
-        divider: divider ?? this.divider,
-        success: success ?? this.success,
-        warning: warning ?? this.warning,
-        error: error ?? this.error,
-      );
+  }) => AppColors(
+    brandPrimary: brandPrimary ?? this.brandPrimary,
+    surfaceDeep: surfaceDeep ?? this.surfaceDeep,
+    surfaceHigh: surfaceHigh ?? this.surfaceHigh,
+    textMain: textMain ?? this.textMain,
+    textMuted: textMuted ?? this.textMuted,
+    divider: divider ?? this.divider,
+    success: success ?? this.success,
+    warning: warning ?? this.warning,
+    error: error ?? this.error,
+  );
 
   @override
   AppColors lerp(AppColors? other, double t) {

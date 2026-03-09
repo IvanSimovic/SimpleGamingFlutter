@@ -22,10 +22,9 @@ class LoginNotifier extends AsyncNotifier<void> {
 
     state = const AsyncLoading();
     state = await AsyncValue.guard(
-      () => ref.read(authRepositoryProvider).signIn(
-            email: email.trim(),
-            password: password,
-          ),
+      () => ref
+          .read(authRepositoryProvider)
+          .signIn(email: email.trim(), password: password),
     );
   }
 }

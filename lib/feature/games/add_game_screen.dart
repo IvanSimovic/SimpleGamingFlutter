@@ -58,25 +58,26 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
               AddGameIdle() => const SizedBox.shrink(),
               AddGameLoading() => const _GameGridShimmer(),
               AddGameContent(:final results) => _SearchResultGrid(
-                  results: results,
-                  onGameSelected: (game) => ref
-                      .read(addGameNotifierProvider.notifier)
-                      .addGame(game),
-                ),
+                results: results,
+                onGameSelected: (game) =>
+                    ref.read(addGameNotifierProvider.notifier).addGame(game),
+              ),
               AddGameEmpty() => Center(
-                  child: Text(
-                    context.l10n.noResults,
-                    style: context.typo.body1
-                        .copyWith(color: context.colors.textMuted),
+                child: Text(
+                  context.l10n.noResults,
+                  style: context.typo.body1.copyWith(
+                    color: context.colors.textMuted,
                   ),
                 ),
+              ),
               AddGameError() => Center(
-                  child: Text(
-                    context.l10n.errorGeneric,
-                    style: context.typo.body1
-                        .copyWith(color: context.colors.error),
+                child: Text(
+                  context.l10n.errorGeneric,
+                  style: context.typo.body1.copyWith(
+                    color: context.colors.error,
                   ),
                 ),
+              ),
               AddGameAdded() => const SizedBox.shrink(),
             },
           ),
@@ -97,19 +98,19 @@ class _SearchResultGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GridView.builder(
-        padding: const EdgeInsets.all(AppSpacing.screenPadding),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: AppSpacing.md,
-          mainAxisSpacing: AppSpacing.md,
-          childAspectRatio: _cardAspectRatio,
-        ),
-        itemCount: results.length,
-        itemBuilder: (context, index) => _GameCard(
-          game: results[index],
-          onTap: () => onGameSelected(results[index]),
-        ),
-      );
+    padding: const EdgeInsets.all(AppSpacing.screenPadding),
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+      crossAxisSpacing: AppSpacing.md,
+      mainAxisSpacing: AppSpacing.md,
+      childAspectRatio: _cardAspectRatio,
+    ),
+    itemCount: results.length,
+    itemBuilder: (context, index) => _GameCard(
+      game: results[index],
+      onTap: () => onGameSelected(results[index]),
+    ),
+  );
 }
 
 class _GameCard extends StatelessWidget {
@@ -120,23 +121,22 @@ class _GameCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Card(
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
-        ),
-        child: InkWell(
-          onTap: onTap,
-          child: game.imageUrl.isEmpty
-              ? _FallbackGameCard(name: game.name)
-              : CachedNetworkImage(
-                  imageUrl: game.imageUrl,
-                  fit: BoxFit.cover,
-                  placeholder: (_, __) => const _ShimmerBox(),
-                  errorWidget: (_, __, ___) =>
-                      _FallbackGameCard(name: game.name),
-                ),
-        ),
-      );
+    clipBehavior: Clip.antiAlias,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
+    ),
+    child: InkWell(
+      onTap: onTap,
+      child: game.imageUrl.isEmpty
+          ? _FallbackGameCard(name: game.name)
+          : CachedNetworkImage(
+              imageUrl: game.imageUrl,
+              fit: BoxFit.cover,
+              placeholder: (_, __) => const _ShimmerBox(),
+              errorWidget: (_, __, ___) => _FallbackGameCard(name: game.name),
+            ),
+    ),
+  );
 }
 
 class _FallbackGameCard extends StatelessWidget {
@@ -146,21 +146,20 @@ class _FallbackGameCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ColoredBox(
-        color: context.colors.surfaceHigh,
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.sm),
-            child: Text(
-              name,
-              style:
-                  context.typo.body2.copyWith(color: context.colors.textMuted),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
+    color: context.colors.surfaceHigh,
+    child: Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.sm),
+        child: Text(
+          name,
+          style: context.typo.body2.copyWith(color: context.colors.textMuted),
+          textAlign: TextAlign.center,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
-      );
+      ),
+    ),
+  );
 }
 
 class _GameGridShimmer extends StatelessWidget {
@@ -168,23 +167,23 @@ class _GameGridShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GridView.builder(
-        padding: const EdgeInsets.all(AppSpacing.screenPadding),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: AppSpacing.md,
-          mainAxisSpacing: AppSpacing.md,
-          childAspectRatio: _cardAspectRatio,
-        ),
-        itemCount: 6,
-        itemBuilder: (_, __) => ClipRRect(
-          borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
-          child: Shimmer.fromColors(
-            baseColor: context.colors.surfaceHigh,
-            highlightColor: context.colors.divider,
-            child: const ColoredBox(color: Colors.white),
-          ),
-        ),
-      );
+    padding: const EdgeInsets.all(AppSpacing.screenPadding),
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+      crossAxisSpacing: AppSpacing.md,
+      mainAxisSpacing: AppSpacing.md,
+      childAspectRatio: _cardAspectRatio,
+    ),
+    itemCount: 6,
+    itemBuilder: (_, __) => ClipRRect(
+      borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
+      child: Shimmer.fromColors(
+        baseColor: context.colors.surfaceHigh,
+        highlightColor: context.colors.divider,
+        child: const ColoredBox(color: Colors.white),
+      ),
+    ),
+  );
 }
 
 class _ShimmerBox extends StatelessWidget {
@@ -192,8 +191,8 @@ class _ShimmerBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Shimmer.fromColors(
-        baseColor: context.colors.surfaceHigh,
-        highlightColor: context.colors.divider,
-        child: const ColoredBox(color: Colors.white),
-      );
+    baseColor: context.colors.surfaceHigh,
+    highlightColor: context.colors.divider,
+    child: const ColoredBox(color: Colors.white),
+  );
 }

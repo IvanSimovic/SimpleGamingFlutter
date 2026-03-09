@@ -7,6 +7,7 @@ import 'package:simple_gaming_flutter/feature/auth/auth_providers.dart';
 import 'package:simple_gaming_flutter/feature/auth/login_screen.dart';
 import 'package:simple_gaming_flutter/feature/games/add_game_screen.dart';
 import 'package:simple_gaming_flutter/feature/games/favourite_games_screen.dart';
+import 'package:simple_gaming_flutter/feature/reels/reels_screen.dart';
 
 // Route paths
 abstract final class AppRoutes {
@@ -17,43 +18,36 @@ abstract final class AppRoutes {
 }
 
 GoRouter buildRouter(WidgetRef ref) => GoRouter(
-      initialLocation: AppRoutes.reels,
-      redirect: (context, state) {
-        final authState = ref.read(authStateProvider);
-        final isLoggedIn = authState.valueOrNull != null;
-        final isOnLogin = state.matchedLocation == AppRoutes.login;
+  initialLocation: AppRoutes.reels,
+  redirect: (context, state) {
+    final authState = ref.read(authStateProvider);
+    final isLoggedIn = authState.valueOrNull != null;
+    final isOnLogin = state.matchedLocation == AppRoutes.login;
 
-        if (!isLoggedIn && !isOnLogin) return AppRoutes.login;
-        if (isLoggedIn && isOnLogin) return AppRoutes.reels;
-        return null;
-      },
-      refreshListenable: _AuthStateListenable(ref),
+    if (!isLoggedIn && !isOnLogin) return AppRoutes.login;
+    if (isLoggedIn && isOnLogin) return AppRoutes.reels;
+    return null;
+  },
+  refreshListenable: _AuthStateListenable(ref),
+  routes: [
+    GoRoute(path: AppRoutes.login, builder: (_, __) => const LoginScreen()),
+    ShellRoute(
+      builder: (context, state, child) => _MainShell(child: child),
       routes: [
+        GoRoute(path: AppRoutes.reels, builder: (_, __) => const ReelsScreen()),
         GoRoute(
-          path: AppRoutes.login,
-          builder: (_, __) => const LoginScreen(),
+          path: AppRoutes.addGame,
+          builder: (context, __) =>
+              AddGameScreen(onNavigateBack: () => context.go(AppRoutes.reels)),
         ),
-        ShellRoute(
-          builder: (context, state, child) => _MainShell(child: child),
-          routes: [
-            GoRoute(
-              path: AppRoutes.reels,
-              builder: (_, __) => const _PlaceholderScreen(label: 'Reels'),
-            ),
-            GoRoute(
-              path: AppRoutes.addGame,
-              builder: (context, __) => AddGameScreen(
-                onNavigateBack: () => context.go(AppRoutes.reels),
-              ),
-            ),
-            GoRoute(
-              path: AppRoutes.favourites,
-              builder: (_, __) => const FavouriteGamesScreen(),
-            ),
-          ],
+        GoRoute(
+          path: AppRoutes.favourites,
+          builder: (_, __) => const FavouriteGamesScreen(),
         ),
       ],
-    );
+    ),
+  ],
+);
 
 // Bridges Riverpod's authStateProvider stream into GoRouter's Listenable refresh mechanism
 class _AuthStateListenable extends ChangeNotifier {
@@ -77,8 +71,7 @@ class _MainShell extends StatelessWidget {
       body: child,
       bottomNavigationBar: NavigationBar(
         selectedIndex: _indexForLocation(location),
-        onDestinationSelected: (index) =>
-            context.go(_locationForIndex(index)),
+        onDestinationSelected: (index) => context.go(_locationForIndex(index)),
         destinations: [
           NavigationDestination(
             icon: const Icon(Icons.movie),
@@ -98,27 +91,16 @@ class _MainShell extends StatelessWidget {
   }
 
   int _indexForLocation(String location) => switch (location) {
-        AppRoutes.reels => 0,
-        AppRoutes.addGame => 1,
-        AppRoutes.favourites => 2,
-        _ => 0,
-      };
+    AppRoutes.reels => 0,
+    AppRoutes.addGame => 1,
+    AppRoutes.favourites => 2,
+    _ => 0,
+  };
 
   String _locationForIndex(int index) => switch (index) {
-        0 => AppRoutes.reels,
-        1 => AppRoutes.addGame,
-        2 => AppRoutes.favourites,
-        _ => AppRoutes.reels,
-      };
-}
-
-class _PlaceholderScreen extends StatelessWidget {
-  const _PlaceholderScreen({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        body: Center(child: Text(label)),
-      );
+    0 => AppRoutes.reels,
+    1 => AppRoutes.addGame,
+    2 => AppRoutes.favourites,
+    _ => AppRoutes.reels,
+  };
 }

@@ -18,17 +18,17 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => MaterialApp.router(
-        title: 'Gaming Flutter',
-        theme: AppTheme.light(),
-        darkTheme: AppTheme.dark(),
-        themeMode: ThemeMode.dark,
-        routerConfig: buildRouter(ref),
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
-      );
+    title: 'Gaming Flutter',
+    theme: AppTheme.light(),
+    darkTheme: AppTheme.dark(),
+    themeMode: ThemeMode.dark,
+    routerConfig: buildRouter(ref),
+    localizationsDelegates: const [
+      AppLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+    supportedLocales: AppLocalizations.supportedLocales,
+  );
 }

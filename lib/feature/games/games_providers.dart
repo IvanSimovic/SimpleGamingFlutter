@@ -9,8 +9,8 @@ import 'package:simple_gaming_flutter/feature/games/games_repository.dart';
 
 final addGameNotifierProvider =
     NotifierProvider.autoDispose<AddGameNotifier, AddGameState>(
-  AddGameNotifier.new,
-);
+      AddGameNotifier.new,
+    );
 
 final favouriteGamesProvider = StreamProvider<List<Game>>((ref) {
   final userId = ref.watch(authStateProvider).valueOrNull?.uid;
@@ -19,10 +19,15 @@ final favouriteGamesProvider = StreamProvider<List<Game>>((ref) {
 });
 
 final favouriteGameIdsProvider = Provider.autoDispose<Set<String>>((ref) {
-  return ref.watch(favouriteGamesProvider).valueOrNull?.map((g) => g.id).toSet() ?? {};
+  return ref
+          .watch(favouriteGamesProvider)
+          .valueOrNull
+          ?.map((g) => g.id)
+          .toSet() ??
+      {};
 });
 
 final favouriteGamesNotifierProvider =
     NotifierProvider.autoDispose<FavouriteGamesNotifier, FavouriteGamesState>(
-  FavouriteGamesNotifier.new,
-);
+      FavouriteGamesNotifier.new,
+    );

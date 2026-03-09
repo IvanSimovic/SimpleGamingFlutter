@@ -46,4 +46,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navFavourites => 'Favourites';
+
+  @override
+  String get noFavourites => 'No favourites yet';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get reelsEmpty => 'No more games to discover';
 }

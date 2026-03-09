@@ -49,7 +49,9 @@ class _FavouriteGamesScreenState extends ConsumerState<FavouriteGamesScreen>
 
     ref.listen<FavouriteGamesState>(favouriteGamesNotifierProvider, (_, next) {
       if (next is FavouriteGamesSelecting) {
-        if (!_shakeController.isAnimating) _shakeController.repeat(reverse: true);
+        if (!_shakeController.isAnimating) {
+          _shakeController.repeat(reverse: true);
+        }
       } else {
         _shakeController
           ..stop()
@@ -59,8 +61,9 @@ class _FavouriteGamesScreenState extends ConsumerState<FavouriteGamesScreen>
 
     final isSelecting = uiState is FavouriteGamesSelecting;
     final isDeleting = uiState is FavouriteGamesDeleting;
-    final selectedIds =
-        uiState is FavouriteGamesSelecting ? uiState.selectedIds : const <String>{};
+    final selectedIds = uiState is FavouriteGamesSelecting
+        ? uiState.selectedIds
+        : const <String>{};
 
     return PopScope(
       canPop: !isSelecting && !isDeleting,
@@ -75,16 +78,18 @@ class _FavouriteGamesScreenState extends ConsumerState<FavouriteGamesScreen>
           leading: isSelecting
               ? IconButton(
                   icon: const Icon(Icons.close),
-                  onPressed:
-                      ref.read(favouriteGamesNotifierProvider.notifier).cancelSelection,
+                  onPressed: ref
+                      .read(favouriteGamesNotifierProvider.notifier)
+                      .cancelSelection,
                 )
               : null,
           actions: [
             if (isSelecting)
               IconButton(
                 icon: const Icon(Icons.delete_outline),
-                onPressed:
-                    ref.read(favouriteGamesNotifierProvider.notifier).deleteSelected,
+                onPressed: ref
+                    .read(favouriteGamesNotifierProvider.notifier)
+                    .deleteSelected,
               )
             else if (isDeleting)
               const Padding(
@@ -106,37 +111,39 @@ class _FavouriteGamesScreenState extends ConsumerState<FavouriteGamesScreen>
               return Center(
                 child: Text(
                   context.l10n.noFavourites,
-                  style: context.typo.body1
-                      .copyWith(color: context.colors.textMuted),
+                  style: context.typo.body1.copyWith(
+                    color: context.colors.textMuted,
+                  ),
                 ),
               );
             }
             return AbsorbPointer(
               absorbing: isDeleting,
               child: GridView.builder(
-              padding: const EdgeInsets.all(AppSpacing.screenPadding),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: AppSpacing.md,
-                mainAxisSpacing: AppSpacing.md,
-                childAspectRatio: _cardAspectRatio,
-              ),
-              itemCount: games.length,
-              itemBuilder: (context, index) {
-                final game = games[index];
-                return _FavouriteGameCard(
-                  game: game,
-                  isSelecting: isSelecting,
-                  isSelected: selectedIds.contains(game.id),
-                  shakeAnimation: _shakeAnimation,
-                  index: index,
-                  onTap: () =>
-                      ref.read(favouriteGamesNotifierProvider.notifier).onTap(game.id),
-                  onLongPress: () => ref
-                      .read(favouriteGamesNotifierProvider.notifier)
-                      .onLongPress(game.id),
-                );
-              },
+                padding: const EdgeInsets.all(AppSpacing.screenPadding),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: AppSpacing.md,
+                  mainAxisSpacing: AppSpacing.md,
+                  childAspectRatio: _cardAspectRatio,
+                ),
+                itemCount: games.length,
+                itemBuilder: (context, index) {
+                  final game = games[index];
+                  return _FavouriteGameCard(
+                    game: game,
+                    isSelecting: isSelecting,
+                    isSelected: selectedIds.contains(game.id),
+                    shakeAnimation: _shakeAnimation,
+                    index: index,
+                    onTap: () => ref
+                        .read(favouriteGamesNotifierProvider.notifier)
+                        .onTap(game.id),
+                    onLongPress: () => ref
+                        .read(favouriteGamesNotifierProvider.notifier)
+                        .onLongPress(game.id),
+                  );
+                },
               ),
             );
           },
@@ -213,19 +220,19 @@ class _SelectionOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ColoredBox(
-        color: isSelected
-            ? context.colors.brandPrimary.withOpacity(0.5)
-            : Colors.black.withOpacity(0.3),
-        child: isSelected
-            ? const Align(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: EdgeInsets.all(AppSpacing.sm),
-                  child: Icon(Icons.check_circle, color: Colors.white),
-                ),
-              )
-            : null,
-      );
+    color: isSelected
+        ? context.colors.brandPrimary.withValues(alpha: 0.5)
+        : Colors.black.withValues(alpha: 0.3),
+    child: isSelected
+        ? const Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: EdgeInsets.all(AppSpacing.sm),
+              child: Icon(Icons.check_circle, color: Colors.white),
+            ),
+          )
+        : null,
+  );
 }
 
 class _FallbackGameCard extends StatelessWidget {
@@ -235,21 +242,20 @@ class _FallbackGameCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ColoredBox(
-        color: context.colors.surfaceHigh,
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.sm),
-            child: Text(
-              name,
-              style:
-                  context.typo.body2.copyWith(color: context.colors.textMuted),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
+    color: context.colors.surfaceHigh,
+    child: Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.sm),
+        child: Text(
+          name,
+          style: context.typo.body2.copyWith(color: context.colors.textMuted),
+          textAlign: TextAlign.center,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
-      );
+      ),
+    ),
+  );
 }
 
 class _GameGridShimmer extends StatelessWidget {
@@ -257,23 +263,23 @@ class _GameGridShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GridView.builder(
-        padding: const EdgeInsets.all(AppSpacing.screenPadding),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: AppSpacing.md,
-          mainAxisSpacing: AppSpacing.md,
-          childAspectRatio: _cardAspectRatio,
-        ),
-        itemCount: 6,
-        itemBuilder: (_, __) => ClipRRect(
-          borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
-          child: Shimmer.fromColors(
-            baseColor: context.colors.surfaceHigh,
-            highlightColor: context.colors.divider,
-            child: const ColoredBox(color: Colors.white),
-          ),
-        ),
-      );
+    padding: const EdgeInsets.all(AppSpacing.screenPadding),
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+      crossAxisSpacing: AppSpacing.md,
+      mainAxisSpacing: AppSpacing.md,
+      childAspectRatio: _cardAspectRatio,
+    ),
+    itemCount: 6,
+    itemBuilder: (_, __) => ClipRRect(
+      borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
+      child: Shimmer.fromColors(
+        baseColor: context.colors.surfaceHigh,
+        highlightColor: context.colors.divider,
+        child: const ColoredBox(color: Colors.white),
+      ),
+    ),
+  );
 }
 
 class _ShimmerBox extends StatelessWidget {
@@ -281,8 +287,8 @@ class _ShimmerBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Shimmer.fromColors(
-        baseColor: context.colors.surfaceHigh,
-        highlightColor: context.colors.divider,
-        child: const ColoredBox(color: Colors.white),
-      );
+    baseColor: context.colors.surfaceHigh,
+    highlightColor: context.colors.divider,
+    child: const ColoredBox(color: Colors.white),
+  );
 }

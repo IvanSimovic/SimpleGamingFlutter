@@ -11,5 +11,6 @@ final authStateProvider = StreamProvider<User?>(
   (ref) => ref.watch(authRepositoryProvider).observeAuthState(),
 );
 
-final loginNotifierProvider =
-    AsyncNotifierProvider<LoginNotifier, void>(LoginNotifier.new);
+final loginNotifierProvider = AsyncNotifierProvider<LoginNotifier, void>(
+  LoginNotifier.new,
+);

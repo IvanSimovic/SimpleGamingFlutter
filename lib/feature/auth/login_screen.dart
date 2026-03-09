@@ -29,7 +29,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   void _signIn() {
-    ref.read(loginNotifierProvider.notifier).signIn(
+    ref
+        .read(loginNotifierProvider.notifier)
+        .signIn(
           email: _email,
           password: _password,
           emailRequiredMessage: context.l10n.loginEmailRequired,
@@ -43,7 +45,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.screenPadding,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

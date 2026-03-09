@@ -171,6 +171,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Favourites'**
   String get navFavourites;
+
+  /// Empty state message on the Favourites screen
+  ///
+  /// In en, this message translates to:
+  /// **'No favourites yet'**
+  String get noFavourites;
+
+  /// Delete action label
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// Empty state message on the Reels screen
+  ///
+  /// In en, this message translates to:
+  /// **'No more games to discover'**
+  String get reelsEmpty;
 }
 
 class _AppLocalizationsDelegate

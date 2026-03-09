@@ -54,28 +54,27 @@ class _AppTextFieldState extends State<AppTextField> {
 
   @override
   Widget build(BuildContext context) => TextField(
-        controller: _controller,
-        focusNode: widget.focusNode,
-        onChanged: widget.onChanged,
-        obscureText: widget.obscureText,
-        keyboardType: widget.keyboardType,
-        textInputAction: widget.textInputAction,
-        onSubmitted:
-            widget.onSubmitted != null ? (_) => widget.onSubmitted!() : null,
-        style: context.typo.body1.copyWith(color: context.colors.textMain),
-        decoration: InputDecoration(
-          labelText: widget.label,
-          labelStyle:
-              context.typo.body2.copyWith(color: context.colors.textMuted),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: context.colors.divider),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide:
-                BorderSide(color: context.colors.brandPrimary, width: 2),
-          ),
-          filled: true,
-          fillColor: context.colors.surfaceHigh,
-        ),
-      );
+    controller: _controller,
+    focusNode: widget.focusNode,
+    onChanged: widget.onChanged,
+    obscureText: widget.obscureText,
+    keyboardType: widget.keyboardType,
+    textInputAction: widget.textInputAction,
+    onSubmitted: widget.onSubmitted != null
+        ? (_) => widget.onSubmitted!()
+        : null,
+    style: context.typo.body1.copyWith(color: context.colors.textMain),
+    decoration: InputDecoration(
+      labelText: widget.label,
+      labelStyle: context.typo.body2.copyWith(color: context.colors.textMuted),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colors.divider),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colors.brandPrimary, width: 2),
+      ),
+      filled: true,
+      fillColor: context.colors.surfaceHigh,
+    ),
+  );
 }

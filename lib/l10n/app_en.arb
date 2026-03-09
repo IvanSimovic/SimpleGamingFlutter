@@ -44,5 +44,8 @@
   "@noFavourites": { "description": "Empty state message on the Favourites screen" },
 
   "delete": "Delete",
-  "@delete": { "description": "Delete action label" }
+  "@delete": { "description": "Delete action label" },
+
+  "reelsEmpty": "No more games to discover",
+  "@reelsEmpty": { "description": "Empty state message on the Reels screen" }
 }

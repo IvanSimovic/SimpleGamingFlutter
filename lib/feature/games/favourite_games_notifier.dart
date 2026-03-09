@@ -37,7 +37,8 @@ class FavouriteGamesNotifier extends AutoDisposeNotifier<FavouriteGamesState> {
     try {
       await Future.wait(
         selectedIds.map(
-          (id) => ref.read(gamesRepositoryProvider).removeFavouriteGame(userId, id),
+          (id) =>
+              ref.read(gamesRepositoryProvider).removeFavouriteGame(userId, id),
         ),
       );
       state = const FavouriteGamesState.normal();

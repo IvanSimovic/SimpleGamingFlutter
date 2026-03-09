@@ -8,10 +8,7 @@ import 'package:simple_gaming_flutter/feature/games/game_model.dart';
 part 'games_repository.g.dart';
 
 final gamesRepositoryProvider = Provider<GamesRepository>(
-  (ref) => GamesRepository(
-    ref.watch(dioProvider),
-    FirebaseFirestore.instance,
-  ),
+  (ref) => GamesRepository(ref.watch(dioProvider), FirebaseFirestore.instance),
 );
 
 // API model — internal, not exposed outside this file
