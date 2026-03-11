@@ -18,9 +18,7 @@ void main() {
     container = ProviderContainer(
       overrides: [
         gamesRepositoryProvider.overrideWithValue(fakeRepo),
-        authStateProvider.overrideWith(
-          (_) => Stream.value(FakeFirebaseUser()),
-        ),
+        authStateProvider.overrideWith((_) => Stream.value(FakeFirebaseUser())),
       ],
     );
     addTearDown(container.dispose);

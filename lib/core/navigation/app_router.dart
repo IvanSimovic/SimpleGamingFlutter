@@ -17,41 +17,59 @@ abstract final class AppRoutes {
   static const favourites = '/favourites';
 }
 
-GoRouter buildRouter(WidgetRef ref) => GoRouter(
-  initialLocation: AppRoutes.reels,
-  redirect: (context, state) {
-    final authState = ref.read(authStateProvider);
-    final isLoggedIn = authState.valueOrNull != null;
-    final isOnLogin = state.matchedLocation == AppRoutes.login;
+// Stable provider — GoRouter is created once per ProviderScope lifetime.
+// Recreating it inside App.build() would reset navigation state on any rebuild.
+final routerProvider = Provider<GoRouter>((ref) {
+  final router = GoRouter(
+    initialLocation: AppRoutes.reels,
+    redirect: (context, state) {
+      final authState = ref.read(authStateProvider);
+      final isLoggedIn = authState.valueOrNull != null;
+      final isOnLogin = state.matchedLocation == AppRoutes.login;
 
-    if (!isLoggedIn && !isOnLogin) return AppRoutes.login;
-    if (isLoggedIn && isOnLogin) return AppRoutes.reels;
-    return null;
-  },
-  refreshListenable: _AuthStateListenable(ref),
-  routes: [
-    GoRoute(path: AppRoutes.login, builder: (_, __) => const LoginScreen()),
-    GoRoute(
-      path: AppRoutes.addGame,
-      builder: (context, __) =>
-          AddGameScreen(onNavigateBack: () => context.pop()),
-    ),
-    ShellRoute(
-      builder: (context, state, child) => _MainShell(child: child),
-      routes: [
-        GoRoute(path: AppRoutes.reels, builder: (_, __) => const ReelsScreen()),
-        GoRoute(
-          path: AppRoutes.favourites,
-          builder: (_, __) => const FavouriteGamesScreen(),
-        ),
-      ],
-    ),
-  ],
-);
+      if (!isLoggedIn && !isOnLogin) return AppRoutes.login;
+      if (isLoggedIn && isOnLogin) return AppRoutes.reels;
+      return null;
+    },
+    refreshListenable: _AuthStateListenable(ref),
+    routes: [
+      GoRoute(path: AppRoutes.login, builder: (_, __) => const LoginScreen()),
+      GoRoute(
+        path: AppRoutes.addGame,
+        builder: (context, __) =>
+            AddGameScreen(onNavigateBack: () => context.pop()),
+      ),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            _MainShell(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.reels,
+                builder: (_, __) => const ReelsScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.favourites,
+                builder: (_, __) => const FavouriteGamesScreen(),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ],
+  );
+  ref.onDispose(router.dispose);
+  return router;
+});
 
 // Bridges Riverpod's authStateProvider stream into GoRouter's Listenable refresh mechanism
 class _AuthStateListenable extends ChangeNotifier {
-  _AuthStateListenable(WidgetRef ref) {
+  _AuthStateListenable(Ref ref) {
     ref.listen<AsyncValue<User?>>(authStateProvider, (_, __) {
       notifyListeners();
     });
@@ -59,26 +77,29 @@ class _AuthStateListenable extends ChangeNotifier {
 }
 
 class _MainShell extends StatelessWidget {
-  const _MainShell({required this.child});
+  const _MainShell({required this.navigationShell});
 
-  final Widget child;
+  final StatefulNavigationShell navigationShell;
 
   @override
   Widget build(BuildContext context) {
-    final location = GoRouterState.of(context).matchedLocation;
-    final onFavourites = location == AppRoutes.favourites;
+    final onFavourites = navigationShell.currentIndex == 1;
 
     return Scaffold(
-      body: child,
+      body: navigationShell,
       floatingActionButton: onFavourites
           ? FloatingActionButton(
               onPressed: () => context.push(AppRoutes.addGame),
+              tooltip: context.l10n.fabAddGame,
               child: const Icon(Icons.add),
             )
           : null,
       bottomNavigationBar: NavigationBar(
-        selectedIndex: _indexForLocation(location),
-        onDestinationSelected: (index) => context.go(_locationForIndex(index)),
+        selectedIndex: navigationShell.currentIndex,
+        onDestinationSelected: (index) => navigationShell.goBranch(
+          index,
+          initialLocation: index == navigationShell.currentIndex,
+        ),
         destinations: [
           NavigationDestination(
             icon: const Icon(Icons.movie),
@@ -92,16 +113,4 @@ class _MainShell extends StatelessWidget {
       ),
     );
   }
-
-  int _indexForLocation(String location) => switch (location) {
-    AppRoutes.reels => 0,
-    AppRoutes.favourites => 1,
-    _ => 0,
-  };
-
-  String _locationForIndex(int index) => switch (index) {
-    0 => AppRoutes.reels,
-    1 => AppRoutes.favourites,
-    _ => AppRoutes.reels,
-  };
 }

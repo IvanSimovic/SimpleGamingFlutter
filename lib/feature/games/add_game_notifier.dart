@@ -47,6 +47,7 @@ class AddGameNotifier extends AutoDisposeNotifier<AddGameState> {
       state = const AddGameState.error();
       return;
     }
+    state = const AddGameState.loading();
     try {
       await ref.read(gamesRepositoryProvider).addFavouriteGame(userId, game);
       state = const AddGameState.added();

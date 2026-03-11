@@ -58,4 +58,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reelsEmpty => 'No more games to discover';
+
+  @override
+  String get reelsAddToFavourites => 'Add to favourites';
+
+  @override
+  String get reelsRemoveFromFavourites => 'Remove from favourites';
+
+  @override
+  String get fabAddGame => 'Add game';
 }

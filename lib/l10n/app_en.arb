@@ -50,5 +50,14 @@
   "@cancel": { "description": "Cancel action label" },
 
   "reelsEmpty": "No more games to discover",
-  "@reelsEmpty": { "description": "Empty state message on the Reels screen" }
+  "@reelsEmpty": { "description": "Empty state message on the Reels screen" },
+
+  "reelsAddToFavourites": "Add to favourites",
+  "@reelsAddToFavourites": { "description": "Accessibility label for the add to favourites button on the Reels screen" },
+
+  "reelsRemoveFromFavourites": "Remove from favourites",
+  "@reelsRemoveFromFavourites": { "description": "Accessibility label for the remove from favourites button on the Reels screen" },
+
+  "fabAddGame": "Add game",
+  "@fabAddGame": { "description": "Accessibility label for the add game floating action button" }
 }

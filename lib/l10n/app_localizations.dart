@@ -195,6 +195,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No more games to discover'**
   String get reelsEmpty;
+
+  /// Accessibility label for the add to favourites button on the Reels screen
+  ///
+  /// In en, this message translates to:
+  /// **'Add to favourites'**
+  String get reelsAddToFavourites;
+
+  /// Accessibility label for the remove from favourites button on the Reels screen
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from favourites'**
+  String get reelsRemoveFromFavourites;
+
+  /// Accessibility label for the add game floating action button
+  ///
+  /// In en, this message translates to:
+  /// **'Add game'**
+  String get fabAddGame;
 }
 
 class _AppLocalizationsDelegate

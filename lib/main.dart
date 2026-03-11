@@ -2,7 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_gaming_flutter/core/navigation/app_router.dart';
+import 'package:simple_gaming_flutter/core/navigation/app_router.dart'
+    show routerProvider;
 import 'package:simple_gaming_flutter/core/theme/app_theme.dart';
 import 'package:simple_gaming_flutter/firebase_options.dart';
 import 'package:simple_gaming_flutter/l10n/app_localizations.dart';
@@ -22,7 +23,7 @@ class App extends ConsumerWidget {
     theme: AppTheme.light(),
     darkTheme: AppTheme.dark(),
     themeMode: ThemeMode.system,
-    routerConfig: buildRouter(ref),
+    routerConfig: ref.watch(routerProvider),
     localizationsDelegates: const [
       AppLocalizations.delegate,
       GlobalMaterialLocalizations.delegate,

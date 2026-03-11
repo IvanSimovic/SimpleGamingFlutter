@@ -6,6 +6,7 @@ import 'package:simple_gaming_flutter/core/l10n/l10n_extension.dart';
 import 'package:simple_gaming_flutter/core/theme/app_spacing.dart';
 import 'package:simple_gaming_flutter/core/theme/app_theme.dart';
 import 'package:simple_gaming_flutter/feature/auth/auth_providers.dart';
+import 'package:simple_gaming_flutter/feature/auth/login_notifier.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -31,12 +32,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   void _signIn() {
     ref
         .read(loginNotifierProvider.notifier)
-        .signIn(
-          email: _email,
-          password: _password,
-          emailRequiredMessage: context.l10n.loginEmailRequired,
-          passwordRequiredMessage: context.l10n.loginPasswordRequired,
-        );
+        .signIn(email: _email, password: _password);
   }
 
   @override
@@ -80,7 +76,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             if (loginState.hasError) ...[
               const SizedBox(height: AppSpacing.md),
               Text(
-                loginState.error.toString(),
+                switch (loginState.error) {
+                  LoginError.emailRequired => context.l10n.loginEmailRequired,
+                  LoginError.passwordRequired =>
+                    context.l10n.loginPasswordRequired,
+                  _ => context.l10n.loginSignInFailed,
+                },
                 style: context.typo.body2.copyWith(color: context.colors.error),
               ),
             ],

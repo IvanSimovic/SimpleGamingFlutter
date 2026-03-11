@@ -3,6 +3,7 @@ import 'package:simple_gaming_flutter/feature/auth/auth_providers.dart';
 import 'package:simple_gaming_flutter/feature/games/game_model.dart';
 import 'package:simple_gaming_flutter/feature/games/games_providers.dart';
 import 'package:simple_gaming_flutter/feature/games/games_repository.dart';
+import 'package:simple_gaming_flutter/feature/reels/reel_game_model.dart';
 import 'package:simple_gaming_flutter/feature/reels/reels_repository.dart';
 import 'package:simple_gaming_flutter/feature/reels/reels_state.dart';
 
@@ -79,15 +80,17 @@ class ReelsNotifier extends AutoDisposeNotifier<ReelsState> {
       if (_cancelled) return;
       final currentAfterFetch = state;
       if (currentAfterFetch is! ReelsContent) return;
-      final gameIndex = currentAfterFetch.games.indexWhere((g) => g.id == game.id);
+      final gameIndex = currentAfterFetch.games.indexWhere(
+        (g) => g.id == game.id,
+      );
       if (gameIndex == -1) return;
-      final updatedGames = List<dynamic>.from(currentAfterFetch.games);
-      updatedGames[gameIndex] = currentAfterFetch.games[gameIndex].copyWith(
+      final updatedGames = List<ReelGame>.of(currentAfterFetch.games);
+      updatedGames[gameIndex] = updatedGames[gameIndex].copyWith(
         description: detail.description,
         screenshots: detail.screenshots,
       );
       state = currentAfterFetch.copyWith(
-        games: List.unmodifiable(updatedGames.cast()),
+        games: List.unmodifiable(updatedGames),
       );
     } catch (_) {
       // Detail unavailable — card shows without description/screenshots.

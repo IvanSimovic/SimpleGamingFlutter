@@ -72,9 +72,7 @@ class _ReelGameApiModel {
 
 @JsonSerializable(createToJson: false)
 class _GameDetailApiModel {
-  const _GameDetailApiModel({
-    this.descriptionRaw,
-  });
+  const _GameDetailApiModel({this.descriptionRaw});
 
   @JsonKey(name: 'description_raw')
   final String? descriptionRaw;
@@ -130,23 +128,19 @@ class ReelsRepository {
     String id,
   ) async {
     final detailFuture = _dio.get<Map<String, dynamic>>('/games/$id');
-    final screenshotsFuture =
-        _dio.get<Map<String, dynamic>>('/games/$id/screenshots');
+    final screenshotsFuture = _dio.get<Map<String, dynamic>>(
+      '/games/$id/screenshots',
+    );
 
     final responses = await Future.wait([detailFuture, screenshotsFuture]);
 
-    final detail =
-        _GameDetailApiModel.fromJson(responses[0].data!);
-    final screenshotResults =
-        responses[1].data!['results'] as List<dynamic>;
+    final detail = _GameDetailApiModel.fromJson(responses[0].data!);
+    final screenshotResults = responses[1].data!['results'] as List<dynamic>;
     final screenshots = screenshotResults
         .map((e) => _ScreenshotApiModel.fromJson(e as Map<String, dynamic>))
         .map((e) => e.image)
         .toList();
 
-    return (
-      description: detail.descriptionRaw ?? '',
-      screenshots: screenshots,
-    );
+    return (description: detail.descriptionRaw ?? '', screenshots: screenshots);
   }
 }

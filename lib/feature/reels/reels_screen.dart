@@ -3,26 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:simple_gaming_flutter/core/l10n/l10n_extension.dart';
+import 'package:simple_gaming_flutter/core/theme/app_colors.dart';
+import 'package:simple_gaming_flutter/core/theme/app_gradients.dart';
 import 'package:simple_gaming_flutter/core/theme/app_spacing.dart';
 import 'package:simple_gaming_flutter/core/theme/app_theme.dart';
 import 'package:simple_gaming_flutter/feature/games/games_providers.dart';
 import 'package:simple_gaming_flutter/feature/reels/reel_game_model.dart';
 import 'package:simple_gaming_flutter/feature/reels/reels_providers.dart';
 import 'package:simple_gaming_flutter/feature/reels/reels_state.dart';
-
-const _scrimTop = LinearGradient(
-  begin: Alignment.topCenter,
-  end: Alignment.bottomCenter,
-  colors: [Color(0x8C000000), Colors.transparent],
-  stops: [0.0, 0.2],
-);
-
-const _scrimBottom = LinearGradient(
-  begin: Alignment.topCenter,
-  end: Alignment.bottomCenter,
-  colors: [Colors.transparent, Color(0xE1000000)],
-  stops: [0.35, 1.0],
-);
 
 class ReelsScreen extends ConsumerStatefulWidget {
   const ReelsScreen({super.key});
@@ -52,7 +40,7 @@ class _ReelsScreenState extends ConsumerState<ReelsScreen> {
     final favouriteIds = ref.watch(favouriteGameIdsProvider);
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.mediaBackground,
       body: switch (state) {
         ReelsLoading() => const _FullScreenShimmer(),
         ReelsError() => Center(
@@ -67,25 +55,21 @@ class _ReelsScreenState extends ConsumerState<ReelsScreen> {
             style: context.typo.body1.copyWith(color: context.colors.textMuted),
           ),
         ),
-        ReelsContent(
-          :final games,
-          :final favouritingIds,
-        ) =>
-          PageView.builder(
-            controller: _pageController,
-            scrollDirection: Axis.vertical,
-            onPageChanged: (index) =>
-                ref.read(reelsNotifierProvider.notifier).onPageChanged(index),
-            itemCount: games.length,
-            itemBuilder: (context, index) => _ReelPage(
-              game: games[index],
-              isFavourited: favouriteIds.contains(games[index].id),
-              isFavouriting: favouritingIds.contains(games[index].id),
-              onFavouriteTap: () => ref
-                  .read(reelsNotifierProvider.notifier)
-                  .toggleFavourite(games[index].id),
-            ),
+        ReelsContent(:final games, :final favouritingIds) => PageView.builder(
+          controller: _pageController,
+          scrollDirection: Axis.vertical,
+          onPageChanged: (index) =>
+              ref.read(reelsNotifierProvider.notifier).onPageChanged(index),
+          itemCount: games.length,
+          itemBuilder: (context, index) => _ReelPage(
+            game: games[index],
+            isFavourited: favouriteIds.contains(games[index].id),
+            isFavouriting: favouritingIds.contains(games[index].id),
+            onFavouriteTap: () => ref
+                .read(reelsNotifierProvider.notifier)
+                .toggleFavourite(games[index].id),
           ),
+        ),
       },
     );
   }
@@ -119,20 +103,21 @@ class _ReelPageState extends State<_ReelPage> {
       children: [
         // Hero image — truly full screen.
         game.imageUrl.isEmpty
-            ? const ColoredBox(color: Colors.black)
+            ? const ColoredBox(color: AppColors.mediaBackground)
             : CachedNetworkImage(
                 imageUrl: game.imageUrl,
                 fit: BoxFit.cover,
                 placeholder: (_, __) => const _FullScreenShimmer(),
-                errorWidget: (_, __, ___) => const ColoredBox(color: Colors.black),
+                errorWidget: (_, __, ___) =>
+                    const ColoredBox(color: AppColors.mediaBackground),
               ),
         // Top scrim — covers status bar area.
         const DecoratedBox(
-          decoration: BoxDecoration(gradient: _scrimTop),
+          decoration: BoxDecoration(gradient: AppGradients.reelScrimTop),
         ),
         // Bottom scrim — covers info column area.
         const DecoratedBox(
-          decoration: BoxDecoration(gradient: _scrimBottom),
+          decoration: BoxDecoration(gradient: AppGradients.reelScrimBottom),
         ),
         // Favourite button — top-right, status bar aware.
         Positioned(
@@ -176,10 +161,7 @@ class _ReelPageState extends State<_ReelPage> {
 }
 
 class _GameInfoColumn extends StatelessWidget {
-  const _GameInfoColumn({
-    required this.game,
-    required this.onScreenshotTap,
-  });
+  const _GameInfoColumn({required this.game, required this.onScreenshotTap});
 
   final ReelGame game;
   final void Function(int index) onScreenshotTap;
@@ -191,12 +173,15 @@ class _GameInfoColumn extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (game.metacritic != null || game.rating > 0) ...[
-          _MetacriticRatingRow(metacritic: game.metacritic, rating: game.rating),
+          _MetacriticRatingRow(
+            metacritic: game.metacritic,
+            rating: game.rating,
+          ),
           const SizedBox(height: AppSpacing.sm),
         ],
         Text(
           game.name,
-          style: context.typo.head4.copyWith(color: Colors.white),
+          style: context.typo.head4.copyWith(color: AppColors.onMedia),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
@@ -205,10 +190,12 @@ class _GameInfoColumn extends StatelessWidget {
           Row(
             children: game.genres
                 .take(3)
-                .map((g) => Padding(
-                      padding: const EdgeInsets.only(right: AppSpacing.sm),
-                      child: _Chip(label: g),
-                    ))
+                .map(
+                  (g) => Padding(
+                    padding: const EdgeInsets.only(right: AppSpacing.sm),
+                    child: _Chip(label: g),
+                  ),
+                )
                 .toList(),
           ),
         ],
@@ -216,19 +203,14 @@ class _GameInfoColumn extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           Text(
             game.description,
-            style: context.typo.body3.copyWith(
-              color: Colors.white.withValues(alpha: 0.85),
-            ),
+            style: context.typo.body3.copyWith(color: AppColors.onMediaMuted),
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
           ),
         ],
         if (game.screenshots.isNotEmpty) ...[
           const SizedBox(height: AppSpacing.sm),
-          _ScreenshotRow(
-            screenshots: game.screenshots,
-            onTap: onScreenshotTap,
-          ),
+          _ScreenshotRow(screenshots: game.screenshots, onTap: onScreenshotTap),
         ],
         if (game.playtime > 0 || game.platforms.isNotEmpty) ...[
           const SizedBox(height: AppSpacing.sm),
@@ -240,10 +222,7 @@ class _GameInfoColumn extends StatelessWidget {
 }
 
 class _MetacriticRatingRow extends StatelessWidget {
-  const _MetacriticRatingRow({
-    required this.metacritic,
-    required this.rating,
-  });
+  const _MetacriticRatingRow({required this.metacritic, required this.rating});
 
   final int? metacritic;
   final double rating;
@@ -260,7 +239,7 @@ class _MetacriticRatingRow extends StatelessWidget {
         if (rating > 0)
           Text(
             '★ ${rating.toStringAsFixed(1)}',
-            style: context.typo.body2.copyWith(color: Colors.white),
+            style: context.typo.body2.copyWith(color: AppColors.onMedia),
           ),
       ],
     );
@@ -275,14 +254,14 @@ class _MetacriticBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = switch (score) {
-      >= 75 => const Color(0xFF4CAF50),
-      >= 50 => const Color(0xFFFFC107),
-      _ => const Color(0xFFF44336),
+      >= 75 => AppColors.scoreGood,
+      >= 50 => AppColors.scoreMixed,
+      _ => AppColors.scoreBad,
     };
     return DecoratedBox(
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(AppSpacing.xs),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -291,7 +270,7 @@ class _MetacriticBadge extends StatelessWidget {
         ),
         child: Text(
           score.toString(),
-          style: context.typo.body6.copyWith(color: Colors.white),
+          style: context.typo.body6.copyWith(color: AppColors.onMedia),
         ),
       ),
     );
@@ -306,7 +285,7 @@ class _Chip extends StatelessWidget {
   @override
   Widget build(BuildContext context) => DecoratedBox(
     decoration: BoxDecoration(
-      color: Colors.white.withValues(alpha: 0.18),
+      color: AppColors.onMediaChip,
       borderRadius: BorderRadius.circular(AppSpacing.xl),
     ),
     child: Padding(
@@ -316,17 +295,14 @@ class _Chip extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: context.typo.body3.copyWith(color: Colors.white),
+        style: context.typo.body3.copyWith(color: AppColors.onMedia),
       ),
     ),
   );
 }
 
 class _ScreenshotRow extends StatelessWidget {
-  const _ScreenshotRow({
-    required this.screenshots,
-    required this.onTap,
-  });
+  const _ScreenshotRow({required this.screenshots, required this.onTap});
 
   final List<String> screenshots;
   final void Function(int index) onTap;
@@ -355,10 +331,7 @@ class _ScreenshotRow extends StatelessWidget {
 }
 
 class _PlatformRow extends StatelessWidget {
-  const _PlatformRow({
-    required this.playtime,
-    required this.platforms,
-  });
+  const _PlatformRow({required this.playtime, required this.platforms});
 
   final int playtime;
   final List<String> platforms;
@@ -372,9 +345,7 @@ class _PlatformRow extends StatelessWidget {
       if (playtime > 0)
         Text(
           '🕹 ${playtime}h',
-          style: context.typo.body3.copyWith(
-            color: Colors.white.withValues(alpha: 0.75),
-          ),
+          style: context.typo.body3.copyWith(color: AppColors.onMediaSubtle),
         ),
       ...platforms.take(4).map((p) => _Chip(label: p)),
     ],
@@ -394,14 +365,16 @@ class _FavouriteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Semantics(
-    label: isFavourited ? 'Remove from favourites' : 'Add to favourites',
+    label: isFavourited
+        ? context.l10n.reelsRemoveFromFavourites
+        : context.l10n.reelsAddToFavourites,
     button: true,
     child: GestureDetector(
       onTap: isFavouriting ? null : onTap,
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.sm),
         decoration: const BoxDecoration(
-          color: Color(0x59000000), // black 35%
+          color: AppColors.overlayActionButton,
           shape: BoxShape.circle,
         ),
         child: isFavouriting
@@ -415,9 +388,7 @@ class _FavouriteButton extends StatelessWidget {
               )
             : Icon(
                 isFavourited ? Icons.favorite : Icons.favorite_border,
-                color: isFavourited
-                    ? context.colors.error
-                    : Colors.white,
+                color: isFavourited ? context.colors.error : AppColors.onMedia,
                 size: 28,
               ),
       ),
@@ -459,7 +430,7 @@ class _FullScreenImageViewerState extends State<_FullScreenImageViewer> {
   Widget build(BuildContext context) => GestureDetector(
     onTap: widget.onDismiss,
     child: ColoredBox(
-      color: Colors.black87,
+      color: AppColors.mediaViewerBackground,
       child: PageView.builder(
         controller: _controller,
         itemCount: widget.images.length,
@@ -477,8 +448,8 @@ class _FullScreenShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Shimmer.fromColors(
-    baseColor: context.colors.surfaceHigh,
-    highlightColor: context.colors.divider,
-    child: const ColoredBox(color: Colors.white),
+    baseColor: AppColors.mediaShimmerBase,
+    highlightColor: AppColors.mediaShimmerHighlight,
+    child: const ColoredBox(color: AppColors.mediaShimmerBase),
   );
 }

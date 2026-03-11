@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:simple_gaming_flutter/core/theme/app_colors.dart';
 import 'package:simple_gaming_flutter/core/l10n/l10n_extension.dart';
 import 'package:simple_gaming_flutter/core/theme/app_spacing.dart';
 import 'package:simple_gaming_flutter/core/theme/app_theme.dart';
@@ -82,8 +83,9 @@ class FavouriteGamesScreen extends ConsumerWidget {
                       : () => ref
                             .read(favouriteGamesNotifierProvider.notifier)
                             .onLongPress(game.id),
-                  onDelete: () =>
-                      ref.read(favouriteGamesNotifierProvider.notifier).delete(),
+                  onDelete: () => ref
+                      .read(favouriteGamesNotifierProvider.notifier)
+                      .delete(),
                   onCancel: () => ref
                       .read(favouriteGamesNotifierProvider.notifier)
                       .cancelSelection(),
@@ -157,10 +159,7 @@ class _FavouriteGameCardState extends State<_FavouriteGameCard>
       animation: _shakeController,
       builder: (_, child) => Transform.translate(
         // sin(value * 8π) = 4 full oscillations, always 0 at start and end
-        offset: Offset(
-          math.sin(_shakeController.value * math.pi * 8) * 8,
-          0,
-        ),
+        offset: Offset(math.sin(_shakeController.value * math.pi * 8) * 8, 0),
         child: child,
       ),
       child: GestureDetector(
@@ -182,7 +181,7 @@ class _FavouriteGameCardState extends State<_FavouriteGameCard>
               AnimatedOpacity(
                 opacity: widget.isOtherSelected ? 0.6 : 0.0,
                 duration: const Duration(milliseconds: 200),
-                child: const ColoredBox(color: Colors.black),
+                child: const ColoredBox(color: AppColors.mediaBackground),
               ),
               if (widget.isTargeted)
                 _DeleteOverlay(
@@ -213,7 +212,10 @@ class _DeleteOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isDeleting) {
       return const Center(
-        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+        child: CircularProgressIndicator(
+          color: AppColors.onMedia,
+          strokeWidth: 2,
+        ),
       );
     }
 
@@ -224,7 +226,7 @@ class _DeleteOverlay extends StatelessWidget {
             onTap: onDelete,
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.6),
+                color: AppColors.overlayCard,
                 borderRadius: BorderRadius.circular(AppSpacing.xl),
               ),
               padding: const EdgeInsets.symmetric(
@@ -233,9 +235,7 @@ class _DeleteOverlay extends StatelessWidget {
               ),
               child: Text(
                 context.l10n.delete.toUpperCase(),
-                style: context.typo.body2.copyWith(
-                  color: const Color(0xFFEF5350),
-                ),
+                style: context.typo.body2.copyWith(color: context.colors.error),
               ),
             ),
           ),
@@ -249,7 +249,7 @@ class _DeleteOverlay extends StatelessWidget {
               onTap: onCancel,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.6),
+                  color: AppColors.overlayCard,
                   borderRadius: BorderRadius.circular(AppSpacing.xl),
                 ),
                 padding: const EdgeInsets.symmetric(
@@ -258,7 +258,7 @@ class _DeleteOverlay extends StatelessWidget {
                 ),
                 child: Text(
                   context.l10n.cancel.toUpperCase(),
-                  style: context.typo.body2.copyWith(color: Colors.white),
+                  style: context.typo.body2.copyWith(color: AppColors.onMedia),
                 ),
               ),
             ),

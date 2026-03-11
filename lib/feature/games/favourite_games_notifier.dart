@@ -21,7 +21,9 @@ class FavouriteGamesNotifier extends AutoDisposeNotifier<FavouriteGamesState> {
     if (userId == null) return;
     state = FavouriteGamesState.deleting(gameId: gameId);
     try {
-      await ref.read(gamesRepositoryProvider).removeFavouriteGame(userId, gameId);
+      await ref
+          .read(gamesRepositoryProvider)
+          .removeFavouriteGame(userId, gameId);
       state = const FavouriteGamesState.normal();
     } catch (_) {
       state = FavouriteGamesState.selecting(gameId: gameId);

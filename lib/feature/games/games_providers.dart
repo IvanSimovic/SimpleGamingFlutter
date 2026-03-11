@@ -12,7 +12,7 @@ final addGameNotifierProvider =
       AddGameNotifier.new,
     );
 
-final favouriteGamesProvider = StreamProvider<List<Game>>((ref) {
+final favouriteGamesProvider = StreamProvider.autoDispose<List<Game>>((ref) {
   final userId = ref.watch(authStateProvider).valueOrNull?.uid;
   if (userId == null) return const Stream.empty();
   return ref.watch(gamesRepositoryProvider).observeFavouriteGames(userId);

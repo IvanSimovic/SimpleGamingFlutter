@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:simple_gaming_flutter/core/theme/app_colors.dart';
+import 'package:simple_gaming_flutter/core/theme/app_spacing.dart';
 import 'package:simple_gaming_flutter/core/theme/app_theme.dart';
 
 class AppButton extends StatelessWidget {
@@ -21,8 +23,10 @@ class AppButton extends StatelessWidget {
     style: FilledButton.styleFrom(
       minimumSize: const Size.fromHeight(52),
       backgroundColor: context.colors.brandPrimary,
-      foregroundColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      foregroundColor: AppColors.onMedia,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSpacing.buttonRadius),
+      ),
     ),
     child: isLoading
         ? const SizedBox(
@@ -30,7 +34,7 @@ class AppButton extends StatelessWidget {
             height: 20,
             child: CircularProgressIndicator(
               strokeWidth: 2,
-              color: Colors.white,
+              color: AppColors.onMedia,
             ),
           )
         : Text(text, style: context.typo.body6),
