@@ -11,6 +11,7 @@ import 'package:simple_gaming_flutter/l10n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  PaintingBinding.instance.imageCache.maximumSizeBytes = 200 * 1024 * 1024;
   runApp(const ProviderScope(child: App()));
 }
 
