@@ -12,12 +12,23 @@ class DefaultFirebaseOptions {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
+      case TargetPlatform.iOS:
+        return ios;
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not configured for this platform.',
         );
     }
   }
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyD2R4uYNXI9r3jbcvbPGmpfugjn7iAWDVI',
+    appId: '1:267887569841:ios:4c9d4fcc55b4a60d45ab90',
+    messagingSenderId: '267887569841',
+    projectId: 'simplegaming-a41b1',
+    storageBucket: 'simplegaming-a41b1.firebasestorage.app',
+    iosBundleId: 'com.simovic.simplegaming',
+  );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDYWjcjLqA_o3PzFbR5_5Q1L70uzBq2uRs',
