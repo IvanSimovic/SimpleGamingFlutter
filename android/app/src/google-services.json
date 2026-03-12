@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "267887569841",
+    "project_id": "simplegaming-a41b1",
+    "storage_bucket": "simplegaming-a41b1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:267887569841:android:4b0087d550efa2be45ab90",
+        "android_client_info": {
+          "package_name": "com.simovic.simplegaming"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYWjcjLqA_o3PzFbR5_5Q1L70uzBq2uRs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
